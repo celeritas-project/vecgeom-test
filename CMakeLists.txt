@@ -45,6 +45,11 @@ endif()
 
 add_executable(vecgeom-test app/vecgeom-test.cc)
 target_link_libraries(vecgeom-test VecGeom::VecGeom)
+set_target_properties(vecgeom-test PROPERTIES
+  CXX_STANDARD 14
+  CXX_EXTENSIONS OFF
+)
+
 install(TARGETS vecgeom-test
   RUNTIME DESTINATION	${CMAKE_INSTALL_BINDIR}
 )
