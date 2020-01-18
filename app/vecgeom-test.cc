@@ -7,14 +7,15 @@
 /// Example app for navigating with VecGeom.
 //---------------------------------------------------------------------------//
 
+#include <TGeoManager.h>
+
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include <TGeoManager.h>
-
-#include "Range.h"
+#include "base/Range.h"
+#include "base/ScopeRootMessages.h"
 
 using celeritas::Range;
 using std::cout;
@@ -25,10 +26,11 @@ int main(int argc, char *argv[]) {
   assert(args.size() == 1);
 
   // Load geometry through ROOT
+  CELERITAS_SCOPE_ROOT_MESSAGES;
   cout << "Loading geometry file from " << args[0] << endl;
   TGeoManager::Import(args[0].c_str());
 
-  // now try to find shape with logical volume name given on the command line
+  // Print all volume names
   TObjArray *vlist = gGeoManager->GetListOfVolumes();
   for (int i : Range(vlist->GetEntries())) {
     TGeoVolume *vol = dynamic_cast<TGeoVolume *>(vlist->At(i));

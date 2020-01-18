@@ -6,6 +6,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 project(VecGeomTest VERSION 0.0.1 LANGUAGES CXX)
+cmake_policy(SET CMP0074 NEW) # Use $ENV{<package>_ROOT} to find packages
 
 include(GNUInstallDirs)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -32,6 +33,7 @@ endif()
 # DEPENDENCIES
 #---------------------------------------------------------------------------##
 
+find_package(ROOT REQUIRED)
 find_package(VecGeom REQUIRED)
 
 if (VGT_USE_CUDA)
@@ -40,18 +42,15 @@ if (VGT_USE_CUDA)
 endif()
 
 #---------------------------------------------------------------------------##
+# LIBRARY
+#---------------------------------------------------------------------------##
+
+add_subdirectory(src)
+
+#---------------------------------------------------------------------------##
 # DEMO APP
 #---------------------------------------------------------------------------##
 
-add_executable(vecgeom-test app/vecgeom-test.cc)
-target_link_libraries(vecgeom-test VecGeom::VecGeom)
-set_target_properties(vecgeom-test PROPERTIES
-  CXX_STANDARD 14
-  CXX_EXTENSIONS OFF
-)
-
-install(TARGETS vecgeom-test
-  RUNTIME DESTINATION	${CMAKE_INSTALL_BINDIR}
-)
+add_subdirectory(app)
 
 #---------------------------------------------------------------------------##

@@ -16,7 +16,7 @@
 
 namespace celeritas {
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \fn range
  * \tparam T Value type to iterate over
@@ -41,10 +41,10 @@ namespace celeritas {
 
  * \endcode
  */
-//===========================================================================//
+//---------------------------------------------------------------------------//
 
 namespace internal {
-//===========================================================================//
+//---------------------------------------------------------------------------//
 template <typename T, typename Enable = void>
 struct range_type_traits {
   using value_type = T;
@@ -58,7 +58,7 @@ struct range_type_traits<
   using counter_type = typename std::underlying_type<T>::type;
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class range_iter
  */
@@ -108,7 +108,7 @@ class range_iter : public std::iterator<std::input_iterator_tag, T> {
   bool operator!=(range_iter const& other) const { return !(*this == other); }
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class inf_range_iter
  *
@@ -125,7 +125,7 @@ class inf_range_iter : public range_iter<T> {
   bool operator!=(inf_range_iter const&) const { return true; }
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class step_range_iter
  */
@@ -160,7 +160,7 @@ class step_range_iter : public range_iter<T> {
   }
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class inf_step_range_iter
  *
@@ -179,7 +179,7 @@ class inf_step_range_iter : public step_range_iter<T> {
 
 }  // namespace internal
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class StepRange
  *
@@ -201,7 +201,7 @@ class StepRange {
   IterT end_;
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class InfStepRange
  *
@@ -223,11 +223,11 @@ class InfStepRange {
   IterT begin_;
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class FiniteRange
  *
- * Proxy iterator for iterating over a range of integral values.
+ * Proxy container for iterating over a range of integral values.
  */
 template <typename T>
 class FiniteRange {
@@ -254,11 +254,11 @@ class FiniteRange {
   IterT end_;
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
  * \class InfiniteRange
  *
- * Proxy iterator for iterating over a range of integral values.
+ * Proxy container for iterating over a range of integral values.
  */
 template <typename T>
 class InfiniteRange {
@@ -277,9 +277,9 @@ class InfiniteRange {
   IterT begin_;
 };
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
- * \fn range
+ * \fn Range
  *
  * Return a range over fixed beginning and end values.
  */
@@ -288,9 +288,9 @@ FiniteRange<T> Range(T begin, T end) {
   return {begin, end};
 }
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
- * \fn range
+ * \fn Range
  *
  * Return a range over a pair of beginning and ending values.
  */
@@ -299,9 +299,9 @@ FiniteRange<T> Range(std::pair<T, T> begin_end) {
   return {begin_end.first, begin_end.second};
 }
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
- * \fn range
+ * \fn Range
  *
  * Return a range with the default start value (0 for numeric types)
  */
@@ -310,9 +310,9 @@ FiniteRange<T> Range(T end) {
   return {T(), end};
 }
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
- * \fn count
+ * \fn Count
  *
  * Count upward from zero.
  */
@@ -321,9 +321,9 @@ InfiniteRange<T> Count() {
   return {T()};
 }
 
-//===========================================================================//
+//---------------------------------------------------------------------------//
 /*!
- * \fn count
+ * \fn Count
  *
  * Count upward from a value.
  */
@@ -337,4 +337,3 @@ InfiniteRange<T> Count(T begin) {
 
 //---------------------------------------------------------------------------//
 #endif  // celeritas_Range_h
-//---------------------------------------------------------------------------//
