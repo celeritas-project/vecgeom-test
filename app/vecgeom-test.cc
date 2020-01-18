@@ -7,12 +7,12 @@
 /// Example app for navigating with VecGeom.
 //---------------------------------------------------------------------------//
 
-#include <TGeoManager.h>
-
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include <TGeoManager.h>
 
 #include "base/Range.h"
 #include "base/ScopeRootMessages.h"

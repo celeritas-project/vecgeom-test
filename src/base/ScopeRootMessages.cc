@@ -9,9 +9,9 @@
 
 #include "ScopeRootMessages.h"
 
-#include <TError.h>
-
 #include <iostream>
+
+#include <TError.h>
 
 namespace {
 //---------------------------------------------------------------------------//
