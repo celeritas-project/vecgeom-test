@@ -16,8 +16,10 @@
 
 #include "base/Range.h"
 #include "base/ScopeRootMessages.h"
+#include "base/TypeToString.h"
 
 using celeritas::Range;
+using celeritas::TypeToString;
 using std::cout;
 using std::endl;
 
@@ -37,7 +39,8 @@ int main(int argc, char *argv[]) {
     assert(vol);
     std::string volname(vol->GetName());
 
-    cout << "Volume " << i << ": " << volname << endl;
+    cout << "Volume " << i << ": " << volname << " (" << TypeToString(*vol)
+         << ")\n";
   }
 }
 

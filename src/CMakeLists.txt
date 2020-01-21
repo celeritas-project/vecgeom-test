@@ -5,6 +5,7 @@
 #----------------------------------------------------------------------------#
 
 add_library(celeritas
+  base/TypeToString.cc
   base/ScopeRootMessages.cc
 )
 target_link_libraries(celeritas PRIVATE ROOT::Core)
