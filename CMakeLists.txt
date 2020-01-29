@@ -37,7 +37,10 @@ find_package(ROOT REQUIRED)
 find_package(VecGeom REQUIRED)
 
 if (VGT_USE_CUDA)
-  message(FATAL_ERROR "CUDA support isn't enabled yet")
+  if (VECGEOM_CUDA_ARCH STREQUAL "none")
+    message(FATAL_ERROR "The VecGeom installation at ${VECGEOM_INSTALL_DIR} "
+      "was configured without CUDA, so VGT_USE_CUDA cannot be used")
+  endif()
   enable_language(CUDA)
 endif()
 

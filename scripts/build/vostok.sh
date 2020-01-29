@@ -11,5 +11,7 @@ cd build
 # it manually this way
 module load vecgeom veccore root
 
-cmake -C ${BUILDSCRIPT_DIR}/vostok.cmake -G Ninja ..
+cmake -C ${BUILDSCRIPT_DIR}/vostok.cmake -G Ninja \
+  -DCMAKE_INSTALL_PREFIX:PATH=$SOURCE_DIR/install \
+  ..
 ninja -v

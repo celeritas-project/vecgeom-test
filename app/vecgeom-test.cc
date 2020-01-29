@@ -33,14 +33,11 @@ using vecgeom::NavigationState;
 using vecgeom::RootGeoManager;
 using vecgeom::VPlacedVolume;
 
-int main(int argc, char *argv[]) {
-  std::vector<std::string> args(argv + 1, argv + argc);
-  assert(args.size() == 1);
-
+void load(const char *filename) {
   // Load geometry through ROOT
   CELERITAS_SCOPE_ROOT_MESSAGES;
-  cout << ">>> Loading geometry file from " << args[0] << endl;
-  TGeoManager::Import(args[0].c_str());
+  cout << ">>> Loading geometry file from " << filename << endl;
+  TGeoManager::Import(filename);
 
   // Print all volume names
   TObjArray *vlist = gGeoManager->GetListOfVolumes();
@@ -60,7 +57,9 @@ int main(int argc, char *argv[]) {
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
 
   RootGeoManager::Instance().PrintNodeTable();
+}
 
+void track() {
   // States at the current and post-step
   const auto &geo_manager = vecgeom::GeoManager::Instance();
   const int max_depth = geo_manager.getMaxDepth();
@@ -97,4 +96,10 @@ int main(int argc, char *argv[]) {
   cout << "Completed: at point " << pos << endl;
 }
 
-//---------------------------------------------------------------------------//
+int main(int argc, char *argv[]) {
+  std::vector<std::string> args(argv + 1, argv + argc);
+  assert(args.size() == 1);
+  load(args[0].c_str());
+
+  track();
+}
