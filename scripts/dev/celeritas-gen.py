@@ -57,6 +57,7 @@ class {name} {{
 '''
 
 INLINE_FILE = TOP + '''\
+
 namespace celeritas {{
 //---------------------------------------------------------------------------//
 /*!
@@ -70,6 +71,8 @@ namespace celeritas {{
 '''
 
 CODE_FILE = TOP + '''\
+#include "{name}.h"
+
 namespace celeritas {{
 //---------------------------------------------------------------------------//
 

@@ -5,7 +5,7 @@
 #----------------------------------------------------------------------------#
 
 add_executable(vecgeom-test vecgeom-test.cc)
-target_link_libraries(vecgeom-test VecGeom::VecGeom ROOT::Geom celeritas)
+target_link_libraries(vecgeom-test VecGeom::VecGeom celeritas)
 set_target_properties(vecgeom-test PROPERTIES
   CXX_STANDARD 14
   CXX_EXTENSIONS OFF

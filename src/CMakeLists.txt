@@ -19,10 +19,13 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_CONFIG_NAME}"
 #----------------------------------------------------------------------------#
 
 add_library(celeritas
-  base/TypeToString.cc
   base/ScopeRootMessages.cc
+  base/TypeToString.cc
+  geom/RootModel.cc
+  geom/VecGeom.cc
 )
-target_link_libraries(celeritas PRIVATE ROOT::Core)
+target_link_libraries(celeritas
+  PRIVATE ROOT::Core ROOT::Geom VecGeom::VecGeom)
 target_include_directories(celeritas
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
