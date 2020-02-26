@@ -35,6 +35,12 @@ VecGeom::VecGeom(const RootModel& model) {
   vecgeom::RootGeoManager::Instance().LoadRootGeometry();
   cout << "::: Initializing tracking information" << endl;
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
+
+  cout << "::: Transferring geometry to GPU" << endl;
+  auto& cuda_manager = vecgeom::CudaManager::Instance();
+  cuda_manager.set_verbose(3);
+  cuda_manager.LoadGeometry(vecgeom::GeoManager::Instance().GetWorld());
+  cuda_manager.Synchronize();
 }
 
 //---------------------------------------------------------------------------//
