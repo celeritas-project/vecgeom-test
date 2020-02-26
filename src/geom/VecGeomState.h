@@ -8,7 +8,9 @@
 #ifndef geom_VecGeomState_h
 #define geom_VecGeomState_h
 
-#include <navigation/VNavigator.h>
+#include <VecGeom/base/Vector3D.h>
+#include <VecGeom/navigation/NavigationState.h>
+#include <VecGeom/volumes/PlacedVolume.h>
 
 namespace celeritas {
 //---------------------------------------------------------------------------//

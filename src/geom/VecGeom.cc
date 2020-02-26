@@ -11,8 +11,10 @@
 #include <iostream>
 #include <limits>
 
-#include <management/ABBoxManager.h>
-#include <management/RootGeoManager.h>
+#include <VecGeom/management/ABBoxManager.h>
+#include <VecGeom/management/RootGeoManager.h>
+#include <VecGeom/navigation/GlobalLocator.h>
+#include <VecGeom/navigation/VNavigator.h>
 
 #include "VecGeomState.h"
 #include "base/TypeToString.h"

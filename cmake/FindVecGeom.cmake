@@ -39,7 +39,7 @@ if (VECGEOM_FOUND AND NOT TARGET "${_VECGEOM_TARGET}")
   endforeach()
 
   # Split libraries into "primary" and "dependencies"
-  # XXX POP_BACK reauquires CMake 3.15 or higher
+  # XXX POP_BACK requires CMake 3.15 or higher
   # set(VECGEOM_DEP_LIBRARIES VECGEOM_LIBRARIES)
   # list(POP_BACK VECGEOM_DEP_LIBRARIES _VECGEOM_LIBRARY)
   list(GET VECGEOM_LIBRARIES -1 _VECGEOM_LIBRARY)
@@ -49,11 +49,23 @@ if (VECGEOM_FOUND AND NOT TARGET "${_VECGEOM_TARGET}")
   # By default the library path has relative components (../..)
   get_filename_component(VECGEOM_LIBRARY "${_VECGEOM_LIBRARY}" REALPATH CACHE)
 
+  set(_NEW_INCLUDE_DIRS ${VECGEOM_EXTERNAL_INCLUDES})
+  if (VECGEOM_INCLUDE_DIR_NEXT)
+    # Scoped includes: require VecGeom/
+    list(APPEND _NEW_INCLUDE_DIRS "${VECGEOM_INCLUDE_DIR_NEXT}")
+  else()
+    # _NEXT has been removed, or the version is too old
+    list(APPEND _NEW_INCLUDE_DIRS "${VECGEOM_INCLUDE_DIR}")
+    if (NOT IS_DIRECTORY "${VECGEOM_INCLUDE_DIR}/VecGeom")
+      message(SEND_ERROR "The installed version of VecGeom is too old")
+    endif()
+  endif()
+
   add_library("${_VECGEOM_TARGET}" IMPORTED UNKNOWN)
   set_target_properties("${_VECGEOM_TARGET}" PROPERTIES
     IMPORTED_LOCATION "${VECGEOM_LIBRARY}"
     INTERFACE_LINK_LIBRARIES "${VECGEOM_DEP_LIBRARIES}"
-    INTERFACE_INCLUDE_DIRECTORIES "${VECGEOM_INCLUDE_DIRS}"
+    INTERFACE_INCLUDE_DIRECTORIES "${_NEW_INCLUDE_DIRS}"
     INTERFACE_COMPILE_DEFINITIONS "${VECGEOM_DEF_LIST}"
   )
 endif()
