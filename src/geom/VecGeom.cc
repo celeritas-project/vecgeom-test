@@ -18,6 +18,7 @@
 
 #include "VecGeomState.h"
 #include "base/TypeToString.h"
+#include "detail/Compatibility.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -49,8 +50,8 @@ void VecGeom::Construct(VecGeomState* state,
   const int max_depth = geo_manager.getMaxDepth();
 
   // Initialize position/direction
-  state->pos.Set(primary.pos[0], primary.pos[1], primary.pos[2]);
-  state->dir.Set(primary.dir[0], primary.dir[1], primary.dir[2]);
+  state->pos = ToVector(primary.pos);
+  state->dir = ToVector(primary.dir);
 
   // Set up current state and locate daughter volume.
   state->vgstate = VgState::MakeInstance(max_depth);
