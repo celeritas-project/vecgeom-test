@@ -11,6 +11,9 @@
 #include <VecGeom/management/CudaManager.h>
 #include <VecGeom/management/RootGeoManager.h>
 
+#include "RootModel.h"
+#include "base/Mirror.h"
+
 namespace celeritas {
 //---------------------------------------------------------------------------//
 // MANAGEMENT
@@ -48,6 +51,25 @@ void VGGeometryHost::HostToDevice(
  */
 void VGGeometryHost::DeviceToHost(
     const VGGeometryDeviceStorage& device_storage) {}
+
+//---------------------------------------------------------------------------//
+/*!
+ * Maximum nested geometry depth, needed for navigation state allocation
+ */
+int VGGeometryHost::MaxDepth() const {
+  const auto& geo_manager = vecgeom::GeoManager::Instance();
+  return geo_manager.getMaxDepth();
+}
+
+//---------------------------------------------------------------------------//
+// FREE FUNCTIONS
+//---------------------------------------------------------------------------//
+/*!
+ * \brief Create a host/device mirror from a root model
+ */
+std::shared_ptr<Mirror<VGGeometryHost>> MakeVGMirror(const RootModel& model) {
+  return std::make_shared<Mirror<VGGeometryHost>>(model);
+}
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas

@@ -9,14 +9,14 @@
 #define geom_VGGeometry_h
 
 #include <iosfwd>
-
-#include "base/PrimaryTrack.h"
-#include "geom/RootModel.h"
+#include <memory>
 
 namespace celeritas {
-
+class RootModel;
 class VGGeometryDeviceStorage;
 class VGGeometryDevice;
+template <class T>
+class Mirror;
 
 //---------------------------------------------------------------------------//
 /*!
@@ -34,9 +34,17 @@ class VGGeometryHost {
   // Construct from a ROOT model
   explicit VGGeometryHost(const RootModel& model);
 
+  // Copy geometry to device
   void HostToDevice(VGGeometryDeviceStorage* device_storage) const;
+  // Copy simulation data back to host
   void DeviceToHost(const VGGeometryDeviceStorage& device_storage);
+
+  // Maximum nested geometry depth
+  int MaxDepth() const;
 };
+
+// Create a host/device mirror from a root model
+std::shared_ptr<Mirror<VGGeometryHost>> MakeVGMirror(const RootModel& model);
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas

@@ -72,11 +72,9 @@ __device__ void VGGeometry::MoveNextStep(StateRef& state) const {
   state.volume(state.vgstate().Top());
   state.vgnext().Clear();
 
-  const real_type distance = state.next_step() + VGGeometry::StepFudge();
+  // Move the next step plus an extra fudge distance
   Real3 newpos(state.pos());
-  newpos[0] += state.dir()[0] * distance;
-  newpos[1] += state.dir()[1] * distance;
-  newpos[2] += state.dir()[2] * distance;
+  axpy(state.next_step() + VGGeometry::StepFudge(), state.dir(), &newpos);
   state.pos(newpos);
 }
 

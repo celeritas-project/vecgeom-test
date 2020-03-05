@@ -10,6 +10,7 @@
 
 #include <VecGeom/volumes/PlacedVolume.h>
 
+#include "VGStateRef.cuh"
 #include "base/Types.h"
 
 namespace celeritas {
@@ -23,6 +24,7 @@ class VGGeometry {
   //! Type aliases
   using Volume = VecGeom::cuda::VPlacedVolume;
   using ConstPtrVolume = const Volume*;
+  using StateRef = VGStateRef;
   //@}
 
   //! Construction parameters

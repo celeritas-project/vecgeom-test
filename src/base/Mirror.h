@@ -21,8 +21,8 @@ namespace celeritas {
  * complex datatypes. It guarantees persistence of associated host and device
  * storage and enforces an interface for their transfer.
  *
- * The constructor accepts a host object *by value*; it is then \c move'd
- * inside the class. It creates an associated \c DeviceStorage object with the
+ * The constructor *forward* to the host type, which is constructed in-place.
+ * It creates an associated \c DeviceStorage object with the
  * default constructor. Calling \c HostToDevice on the mirror will dispatch to
  * the \c HostType's method of the same name. Likewise with \c DeviceToHost .
  *
@@ -38,7 +38,7 @@ namespace celeritas {
     struct HostType {
       using DeviceStorageType = ...;
       using DeviceType = ...;
-      HostType(HostType&& other);
+      HostType(...);
       void HostToDevice(DeviceStorageType* device_storage) const;
       void DeviceToHost(const DeviceStorageType& device_storage);
     };
@@ -62,7 +62,10 @@ class Mirror {
   //@}
 
  public:
-  explicit inline Mirror(HostType host_obj);
+  //! Construct the host data in-place.
+  template <class... Args>
+  explicit inline Mirror(Args&&... host_args)
+      : host_(std::forward<Args>(host_args)...) {}
 
   // Copy data from host to device memory
   inline void HostToDevice();
