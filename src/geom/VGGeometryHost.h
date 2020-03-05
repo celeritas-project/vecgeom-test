@@ -3,10 +3,10 @@
 // See the top-level COPYRIGHT file for details.
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 //---------------------------------------------------------------------------//
-//! \file geom/VecGeom.h
+//! \file geom/VGGeometryHost.h
 //---------------------------------------------------------------------------//
-#ifndef geom_VecGeom_h
-#define geom_VecGeom_h
+#ifndef geom_VGGeometry_h
+#define geom_VGGeometry_h
 
 #include <iosfwd>
 
@@ -15,41 +15,30 @@
 
 namespace celeritas {
 
-class VecGeomState;
+class VGGeometryDeviceStorage;
+class VGGeometryDevice;
 
 //---------------------------------------------------------------------------//
 /*!
- * Manage a VecGeom geometry.
+ * Manage a CUDA VGGeometry geometry.
  */
-class VecGeom {
+class VGGeometryHost {
  public:
   //@{
   //! Type aliases
-  using InitialState = PrimaryTrack;
-  using State = VecGeomState;
+  using DeviceStorageType = VGGeometryDeviceStorage;
+  using DeviceType = VGGeometryDevice;
   //@}
 
  public:
   // Construct from a ROOT model
-  explicit VecGeom(const RootModel& model);
+  explicit VGGeometryHost(const RootModel& model);
 
-  // Construct a state
-  void Construct(VecGeomState* state, const InitialState& primary) const;
-
-  // Destroy a state
-  void Destroy(VecGeomState* state) const;
-
-  //--- TRACKING ---//
-
-  bool IsInside(const VecGeomState& state) const;
-  void FindNextStep(VecGeomState* state) const;
-  double NextStep(const VecGeomState& state) const;
-  void MoveNextStep(VecGeomState* state) const;
-
-  static constexpr double StepFudge() { return 1e-6; }
+  void HostToDevice(VGGeometryDeviceStorage* device_storage) const;
+  void DeviceToHost(const VGGeometryDeviceStorage& device_storage);
 };
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 
-#endif  // geom_VecGeom_h
+#endif  // geom_VGGeometry_h
