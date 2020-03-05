@@ -12,7 +12,7 @@ import subprocess
 import sys
 ###############################################################################
 
-TOP = '''\
+CLIKE_TOP = '''\
 //{modeline:-^75s}//
 // Copyright 2020 UT-Battelle, LLC, and other Celeritas developers.
 // See the top-level COPYRIGHT file for details.
@@ -80,6 +80,53 @@ namespace celeritas {{
 }}  // namespace celeritas
 '''
 
+CMAKE_TOP = '''\
+#{modeline:-^77s}#
+# Copyright 2020 UT-Battelle, LLC and other VecGeomTest Developers.
+# See the top-level COPYRIGHT file for details.
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
+'''
+
+CMAKELISTS_FILE = '''\
+#-----------------------------------------------------------------------------#
+
+
+#-----------------------------------------------------------------------------#
+'''
+
+
+CMAKE_FILE = '''\
+#[=======================================================================[.rst:
+
+{basename}
+-------------------
+
+Description of overall module contents goes here.
+
+.. command:: my_command_name
+
+  Pass the given compiler-dependent warning flags to a library target::
+
+    my_command_name(<target>
+                    <INTERFACE|PUBLIC|PRIVATE>
+                    LANGUAGE <lang> [<lang>...]
+                    [CACHE_VARIABLE <name>])
+
+  ``target``
+    Name of the library target.
+
+  ``scope``
+    One of ``INTERFACE``, ``PUBLIC``, or ``PRIVATE``. ...
+
+#]=======================================================================]
+
+function(my_command_name)
+endfunction()
+
+#-----------------------------------------------------------------------------#
+'''
+
+
 TEMPLATES = {
     'h': HEADER_FILE,
     'i.h': INLINE_FILE,
@@ -89,6 +136,8 @@ TEMPLATES = {
     'k.cuh': INLINE_FILE,
     'i.cuh': INLINE_FILE,
     't.cuh': INLINE_FILE,
+    'cmake': CMAKE_FILE,
+    'CMakeLists.txt': CMAKELISTS_FILE,
 }
 
 LANG = {
@@ -96,6 +145,13 @@ LANG = {
     'cc': "C++",
     'cu': "CUDA",
     'cuh': "CUDA",
+    'cmake': "CMake",
+}
+
+TOPS = {
+    'C++': CLIKE_TOP,
+    'CUDA': CLIKE_TOP,
+    'CMake': CMAKE_TOP,
 }
 
 HEXT = {
@@ -109,26 +165,39 @@ def generate(root, filename):
         return
     relpath = os.path.relpath(filename, start=root)
     (basename, _, longext) = filename.partition('.')
-    try:
-        template = TEMPLATES[longext]
-    except KeyError:
+
+    template = TEMPLATES.get(filename, None)
+    if template is None:
+        template = TEMPLATES.get(longext, None)
+    if template is None:
         print("Invalid extension ." + longext)
         sys.exit(1)
 
     ext = longext.split('.')[-1]
-    lang = LANG[ext]
+    for check_lang in [filename, longext, ext]:
+        try:
+            lang = LANG[check_lang]
+        except KeyError:
+            continue
+        else:
+            break
+    else:
+        raise KeyError("Missing extension in LANG")
+
+    top = TOPS[lang]
 
     variables = {
         'longext': longext,
         'ext': ext,
-        'hext': HEXT[lang],
+        'hext': HEXT.get(lang, ext),
         'modeline': "-*-{}-*-".format(lang),
         'name': re.sub(r'\..*', '', os.path.basename(filename)),
         'header_guard': re.sub(r'\W', '_', relpath),
         'filename': filename,
+        'basename': basename,
         }
     with open(filename, 'w') as f:
-        f.write((TOP + template).format(**variables))
+        f.write((top + template).format(**variables))
 
 def main():
     import argparse

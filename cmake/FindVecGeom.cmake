@@ -5,7 +5,7 @@
 #[=======================================================================[.rst:
 
 FindVecGeom
---------------
+-----------
 
 Find VecGeom and define modern CMake targets.
 

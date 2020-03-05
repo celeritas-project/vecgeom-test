@@ -10,6 +10,7 @@ cmake_policy(SET CMP0074 NEW) # Use $ENV{<package>_ROOT} to find packages
 
 include(GNUInstallDirs)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(VgtUtils)
 
 #---------------------------------------------------------------------------##
 # OPTIONS
