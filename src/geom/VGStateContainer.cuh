@@ -11,7 +11,7 @@
 #include <VecGeom/navigation/NavStatePool.h>
 #include <thrust/device_vector.h>
 
-#include "VGStateView.h"
+#include "VGStateView.cuh"
 #include "base/Types.h"
 
 namespace celeritas {
@@ -30,9 +30,6 @@ class VGStateContainer {
   //@}
 
  public:
-  // Allow default constructor for delayed construction
-  VGStateContainer();
-
   // Construct from number of states and the root geometry model
   VGStateContainer(ssize_type size, const VGGeometryHost& host);
 
@@ -45,7 +42,7 @@ class VGStateContainer {
  private:
   ssize_type size_ = 0;
   ssize_type vgmaxdepth_ = 0;
-  thrust::device_vector<const Volume*> volume_;
+  thrust::device_vector<const Volume*> volume_ptrs_;
   vecgeom::cuda::NavStatePool vgstate_;
   vecgeom::cuda::NavStatePool vgnext_;
   thrust::device_vector<Real3> pos_;

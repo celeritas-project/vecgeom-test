@@ -23,12 +23,12 @@ namespace celeritas {
  * Copy data to device
  */
 void VGGeometryHost::HostToDevice(VGGeometryStorage* device_storage) const {
-  // VecGeom host/device code *must* be called from a .cc file
-  this->LoadCudaGeometryManager();
-  // Since VGGeometryDeviceStorage includes vecgeom cuda code *it* can only be
-  // modified from a .cu file.
-  device_storage->world_volume =
-      vecgeom::cxx::CudaManager::Instance().world_gpu();
+  cout << "::: Transferring geometry to GPU" << endl;
+  auto& cuda_manager = vecgeom::cxx::CudaManager::Instance();
+  cuda_manager.set_verbose(3);
+  cuda_manager.LoadGeometry();
+  cuda_manager.Synchronize();
+  device_storage->world_volume = cuda_manager.world_gpu();
 }
 
 //---------------------------------------------------------------------------//

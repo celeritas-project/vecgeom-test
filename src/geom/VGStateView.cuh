@@ -58,12 +58,13 @@ class VGStateView {
   //! Get a reference to the local state for a thread
   __device__ value_type operator[](ssize_type idx) const {
     VGStateRef::Params params;
-    params.volume_handle = volume_handle + idx;
-    params.vgstate = this->GetNavState(data_.vgstate);
-    params.vgnext = this->GetNavState(data_.vgnext);
+    params.volume_handle = data_.volume_handle + idx;
+    params.vgstate = this->GetNavState(data_.vgstate, idx);
+    params.vgnext = this->GetNavState(data_.vgnext, idx);
     params.pos = data_.pos + idx;
     params.dir = data_.dir + idx;
-    params.next_step = next_step + idx;
+    params.next_step = data_.next_step + idx;
+    return value_type(params);
   }
 
  private:

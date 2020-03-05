@@ -43,16 +43,4 @@ int VGGeometryHost::MaxDepth() const {
 }
 
 //---------------------------------------------------------------------------//
-/*!
- * Copy data to device
- */
-void VGGeometryHost::LoadCudaGeometryManager() const {
-  cout << "::: Transferring geometry to GPU" << endl;
-  auto& cuda_manager = vecgeom::CudaManager::Instance();
-  cuda_manager.set_verbose(3);
-  cuda_manager.LoadGeometry();
-  cuda_manager.Synchronize();
-}
-
-//---------------------------------------------------------------------------//
 }  // namespace celeritas

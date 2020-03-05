@@ -23,6 +23,7 @@ add_library(celeritas
   geom/RootModel.cc
   geom/VGGeometryHost.cc
   geom/VGGeometryHost.cu
+  geom/VGStateContainer.cu
 )
 target_link_libraries(celeritas
   PRIVATE ROOT::Core ROOT::Geom VecGeom::VecGeom)

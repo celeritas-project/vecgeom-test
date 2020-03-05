@@ -41,12 +41,9 @@ class VGGeometryHost {
 
   // Maximum nested geometry depth
   int MaxDepth() const;
-
- private:
-  void LoadCudaGeometryManager() const;
 };
 
-// Create a host/device mirror from a root model
+// Create a host/device mirror from a root model and copy to device
 std::shared_ptr<Mirror<VGGeometryHost>> MakeVGMirror(const RootModel& model);
 
 //---------------------------------------------------------------------------//

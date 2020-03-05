@@ -10,21 +10,18 @@
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
-//! Default constructor
-VGStateContainer::VGStateContainer() = default;
-
-//---------------------------------------------------------------------------//
 /*!
  * Construct from number of states and the root geometry model
  */
-VGStateContainer::VGStateContainer(size_type size, const VGGeometryHost& geom)
+VGStateContainer::VGStateContainer(ssize_type size, const VGGeometryHost& geom)
     : size_(size),
       vgmaxdepth_(geom.MaxDepth()),
-      vgstate_(size_, maxdepth_),
-      vgnext_(size, maxdepth_),
-      pos_(size),
-      dir_(size),
-      next_step_(size) {}
+      volume_ptrs_(size_),
+      vgstate_(size_, vgmaxdepth_),
+      vgnext_(size_, vgmaxdepth_),
+      pos_(size_),
+      dir_(size_),
+      next_step_(size_) {}
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
