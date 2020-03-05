@@ -11,7 +11,7 @@
 namespace celeritas {
 //---------------------------------------------------------------------------//
 template <typename T, std::size_t N>
-Array;
+class Array;
 
 using ssize_type = int;
 using real_type = double;

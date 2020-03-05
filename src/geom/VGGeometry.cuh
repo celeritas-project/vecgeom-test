@@ -10,6 +10,7 @@
 
 #include <VecGeom/volumes/PlacedVolume.h>
 
+#include "InitialStateRef.cuh"
 #include "VGStateRef.cuh"
 #include "base/Types.h"
 
@@ -22,7 +23,7 @@ class VGGeometry {
  public:
   //@{
   //! Type aliases
-  using Volume = VecGeom::cuda::VPlacedVolume;
+  using Volume = vecgeom::cuda::VPlacedVolume;
   using ConstPtrVolume = const Volume*;
   using StateRef = VGStateRef;
   //@}

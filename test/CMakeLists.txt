@@ -7,7 +7,7 @@
 # Allow C++ code to include Thrust and use the CUDA API (cudaMalloc etc) but not
 # call kernels.
 add_executable(test_devptr test-devptr.cc)
-target_link_libraries(test_devptr VecGeom::VecGeom celeritas)
+target_link_libraries(test_devptr PRIVATE VecGeom::VecGeom celeritas)
 set_target_properties(test_devptr PROPERTIES
   CXX_STANDARD 14
   CXX_EXTENSIONS OFF

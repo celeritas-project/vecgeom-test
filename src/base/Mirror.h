@@ -8,9 +8,8 @@
 #ifndef base_Mirror_h
 #define base_Mirror_h
 
-#include <utility>
-
 #include "DeviceUniquePtr.h"
+#include "Macros.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -56,13 +55,16 @@ class Mirror {
  public:
   //@{
   //! Type aliases
-  using HostType = typename HostT;
+  using HostType = HostT;
   using DeviceStorageType = typename HostT::DeviceStorageType;
   using DeviceType = typename HostT::DeviceType;
   //@}
 
+  static_assert(CELERITAS_IS_TRIVIALLY_COPYABLE(DeviceType),
+                "DeviceType is not trivially copyable");
+
  public:
-  //! Construct the host data in-place.
+  //! Construct host object by perfect forwarding constructor arguments.
   template <class... Args>
   explicit inline Mirror(Args&&... host_args)
       : host_(std::forward<Args>(host_args)...) {}
@@ -77,12 +79,12 @@ class Mirror {
   //! Host accessors
   HostType& Host() { return host_; }
   const HostType& Host() const { return host_; }
-  DeviceStorageType& DeviceStorage() { return device_; }
-  const DeviceStorageType& DeviceStorage() const { return device_; }
+  DeviceStorageType& DeviceStorage() { return device_storage_; }
+  const DeviceStorageType& DeviceStorage() const { return device_storage_; }
   //@}
 
   //! Host-callable accessor to device-resident memory
-  DeviceType View() const { return device_.View(); }
+  DeviceType View() const { return device_storage_.View(); }
 
   // Access a persistent device pointer if created
   inline const DeviceType* DevicePointer() const;

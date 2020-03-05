@@ -52,6 +52,11 @@
 #define TCB_SPAN_CUDA_HOST_AND_DEVICE
 #endif
 
+#ifdef __CUDA_ARCH__
+#define TCB_SPAN_NO_EXCEPTIONS
+#define TCB_SPAN_NO_CONTRACT_CHECKING
+#endif
+
 #ifndef TCB_SPAN_NO_EXCEPTIONS
 #include <cstdio>
 #include <stdexcept>
@@ -169,7 +174,8 @@ using byte = unsigned char;
 #define TCB_SPAN_NODISCARD
 #endif
 
-TCB_SPAN_INLINE_VAR constexpr std::size_t dynamic_extent = -1;
+TCB_SPAN_INLINE_VAR constexpr std::size_t dynamic_extent =
+    static_cast<std::size_t>(-1);
 
 template <typename ElementType, std::size_t Extent = dynamic_extent>
 class span;
@@ -178,7 +184,7 @@ namespace detail {
 
 template <typename E, std::size_t S>
 struct span_storage {
-  TCB_SPAN_CONSTEXPR span_storage() noexcept = default;
+  constexpr span_storage() noexcept = default;
 
   TCB_SPAN_CONSTEXPR span_storage(E* ptr, std::size_t /*unused*/) noexcept
       : ptr(ptr) {}
@@ -189,7 +195,7 @@ struct span_storage {
 
 template <typename E>
 struct span_storage<E, dynamic_extent> {
-  TCB_SPAN_CONSTEXPR span_storage() noexcept = default;
+  constexpr span_storage() noexcept = default;
 
   TCB_SPAN_CONSTEXPR span_storage(E* ptr, std::size_t size) noexcept
       : ptr(ptr), size(size) {}
@@ -385,7 +391,7 @@ class span {
   TCB_SPAN_CONSTEXPR span(const Container& cont)
       : storage_(detail::data(cont), detail::size(cont)) {}
 
-  TCB_SPAN_CONSTEXPR span(const span& other) noexcept = default;
+  constexpr span(const span& other) noexcept = default;
 
   template <typename OtherElementType, std::size_t OtherExtent,
             typename std::enable_if<
@@ -399,8 +405,7 @@ class span {
 
   ~span() noexcept = default;
 
-  TCB_SPAN_CONSTEXPR_ASSIGN span& operator=(const span& other) noexcept =
-      default;
+  constexpr span& operator=(const span& other) noexcept = default;
 
   // [span.sub], span subviews
   template <std::size_t Count>

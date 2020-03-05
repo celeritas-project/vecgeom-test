@@ -1,4 +1,4 @@
-#include "base/Mirror.h"
+#include "base/DeviceUniquePtr.h"
 
 struct MyData {
   int i;
@@ -6,6 +6,6 @@ struct MyData {
 };
 
 int main(int argc, char** argv) {
-  auto myptr = celeritas::MakeSharedDevicePtr<MyData>(MyData{10, 20});
+  auto myptr = celeritas::MakeDeviceUnique<MyData>(MyData{10, 20});
   return 0;
 }

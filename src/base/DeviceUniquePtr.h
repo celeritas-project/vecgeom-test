@@ -24,7 +24,7 @@ struct CudaDeleter {
 
 //! Typename alias for CUDA-owned memory managed by a std::unique_ptr.
 template <class T>
-using DeviceUniquePtr = std::unique_ptr<T, CudaDeleter>;
+using DeviceUniquePtr = std::unique_ptr<T, CudaDeleter<T>>;
 
 //---------------------------------------------------------------------------//
 // Allocate uninitialized device memory managed by unique_ptr

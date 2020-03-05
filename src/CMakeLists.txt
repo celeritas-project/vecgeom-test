@@ -20,9 +20,9 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_CONFIG_NAME}"
 
 add_library(celeritas
   base/ScopeRootMessages.cc
-  base/TypeToString.cc
   geom/RootModel.cc
-  geom/VecGeom.cc
+  geom/VGGeometryHost.cc
+  geom/VGGeometryHost.cu
 )
 target_link_libraries(celeritas
   PRIVATE ROOT::Core ROOT::Geom VecGeom::VecGeom)

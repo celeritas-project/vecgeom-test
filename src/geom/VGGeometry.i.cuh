@@ -6,7 +6,11 @@
 //! \file VGGeometry.i.cuh
 //---------------------------------------------------------------------------//
 
-#include "base/Utility.cuh"
+#include <VecGeom/navigation/GlobalLocator.h>
+#include <VecGeom/navigation/VNavigator.h>
+
+#include "base/Constants.h"
+#include "detail/Compatibility.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -24,7 +28,7 @@ __device__ void VGGeometry::Construct(StateRef& state,
   state.vgstate().Clear();
   auto volume = data_.world_volume;
   const bool contains_point = true;
-  volume = VGGeometry::GlobalLocator::LocateGlobalPoint(
+  volume = vecgeom::GlobalLocator::LocateGlobalPoint(
       volume, ToVector(state.pos()), state.vgstate(), contains_point);
 
   // assert(volume);
@@ -32,7 +36,7 @@ __device__ void VGGeometry::Construct(StateRef& state,
 
   // Set up next state
   state.vgstate().Clear();
-  state.next_step(std::numeric_limits<real_type>::quiet_NaN());
+  state.next_step(celeritas::numeric_limits<real_type>::quiet_NaN());
 }
 
 //---------------------------------------------------------------------------//
@@ -48,10 +52,10 @@ __device__ bool VGGeometry::IsInside(const StateRef& state) const {
  * Find the distance to the next geometric boundary.
  */
 __device__ void VGGeometry::FindNextStep(StateRef& state) const {
-  VGGeometry::VNavigator const* navigator =
+  vecgeom::VNavigator const* navigator =
       state.volume()->GetLogicalVolume()->GetNavigator();
   real_type next_step = navigator->ComputeStepAndPropagatedState(
-      ToVector(state.pos()), ToVector(state.dir()), VGGeometry::kInfLength,
+      ToVector(state.pos()), ToVector(state.dir()), vecgeom::kInfLength,
       state.vgstate(), state.vgnext());
 }
 
@@ -60,7 +64,7 @@ __device__ void VGGeometry::FindNextStep(StateRef& state) const {
  * \brief Return the next straight-line distance to the boundary.
  */
 __device__ real_type VGGeometry::NextStep(const StateRef& state) const {
-  return state.next_step;
+  return state.next_step();
 }
 
 //---------------------------------------------------------------------------//
@@ -82,8 +86,7 @@ __device__ void VGGeometry::MoveNextStep(StateRef& state) const {
 /*!
  * Destroy and invalidate a state
  */
-__device__ void VGGeometry::Destroy(StateRef& state,
-                                    const InitialStateRef& primary) const {
+__device__ void VGGeometry::Destroy(StateRef& state) const {
   state.vgstate().Clear();
   state.vgnext().Clear();
 }

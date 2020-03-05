@@ -5,16 +5,16 @@
 //---------------------------------------------------------------------------//
 //! \file geom/VGGeometryHost.h
 //---------------------------------------------------------------------------//
-#ifndef geom_VGGeometry_h
-#define geom_VGGeometry_h
+#ifndef geom_VGGeometryHost_h
+#define geom_VGGeometryHost_h
 
 #include <iosfwd>
 #include <memory>
 
 namespace celeritas {
 class RootModel;
-class VGGeometryDeviceStorage;
-class VGGeometryDevice;
+class VGGeometryStorage;
+class VGGeometry;
 template <class T>
 class Mirror;
 
@@ -26,8 +26,8 @@ class VGGeometryHost {
  public:
   //@{
   //! Type aliases
-  using DeviceStorageType = VGGeometryDeviceStorage;
-  using DeviceType = VGGeometryDevice;
+  using DeviceStorageType = VGGeometryStorage;
+  using DeviceType = VGGeometry;
   //@}
 
  public:
@@ -35,12 +35,15 @@ class VGGeometryHost {
   explicit VGGeometryHost(const RootModel& model);
 
   // Copy geometry to device
-  void HostToDevice(VGGeometryDeviceStorage* device_storage) const;
+  void HostToDevice(VGGeometryStorage* device_storage) const;
   // Copy simulation data back to host
-  void DeviceToHost(const VGGeometryDeviceStorage& device_storage);
+  void DeviceToHost(const VGGeometryStorage& device_storage);
 
   // Maximum nested geometry depth
   int MaxDepth() const;
+
+ private:
+  void LoadCudaGeometryManager() const;
 };
 
 // Create a host/device mirror from a root model
@@ -49,4 +52,4 @@ std::shared_ptr<Mirror<VGGeometryHost>> MakeVGMirror(const RootModel& model);
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 
-#endif  // geom_VGGeometry_h
+#endif  // geom_VGGeometryHost_h

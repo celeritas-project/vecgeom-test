@@ -7,20 +7,11 @@
 //---------------------------------------------------------------------------//
 
 #include <cassert>
+#include <utility>
 
 #include <cuda_runtime_api.h>
 
 namespace celeritas {
-//---------------------------------------------------------------------------//
-/*!
- * Construct by capturing a host object.
- */
-template <class T>
-Mirror<T>::Mirror() : host_(std::move(host_obj)) {
-  static_assert(CELERITAS_IS_TRIVIALLY_COPYABLE(DeviceType),
-                "DeviceType is not trivially copyable");
-}
-
 //---------------------------------------------------------------------------//
 /*!
  * Copy data from host to device memory.
@@ -30,7 +21,7 @@ Mirror<T>::Mirror() : host_(std::move(host_obj)) {
  */
 template <class T>
 void Mirror<T>::HostToDevice() {
-  host_.HostToDevice(device_storage_);
+  host_.HostToDevice(&device_storage_);
   if (persistent_device_ptr_) {
     this->UpdateDevicePtr();
   }
@@ -50,7 +41,7 @@ void Mirror<T>::DeviceToHost() {
  * \brief Access a persistent device pointer (it must first be created)
  */
 template <class T>
-const auto* Mirror<T>::DevicePointer() const -> const DeviceType* {
+auto Mirror<T>::DevicePointer() const -> const DeviceType* {
   assert(persistent_device_ptr_);
   return persistent_device_ptr_.get();
 }

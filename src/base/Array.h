@@ -17,6 +17,10 @@
 #endif
 
 namespace celeritas {
+
+template <typename ElementType, std::size_t Extent>
+class span;
+
 //---------------------------------------------------------------------------//
 /*!
  * Fixed-size simple array for storage.
@@ -31,7 +35,7 @@ struct Array {
   using value_type = T;
   using size_type = std::size_t;
   using pointer = value_type*;
-  using const_pointer = value_type*;
+  using const_pointer = const value_type*;
   using reference = value_type&;
   using const_reference = const value_type&;
   using iterator = pointer;
@@ -95,6 +99,17 @@ CELERITAS_HOST_DEVICE bool operator!=(const Array<T, N>& lhs,
 template <typename T, std::size_t N>
 CELERITAS_HOST_DEVICE void axpy(T a, const Array<T, N>& x, Array<T, N>* y);
 
+//---------------------------------------------------------------------------//
+template <typename T, std::size_t N>
+constexpr CELERITAS_HOST_DEVICE span<T, N> make_span(Array<T, N>& x) {
+  return {x.data(), N};
+}
+
+template <typename T, std::size_t N>
+constexpr CELERITAS_HOST_DEVICE span<const T, N> make_span(
+    const Array<T, N>& x) {
+  return {x.data(), N};
+}
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 

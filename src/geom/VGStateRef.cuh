@@ -48,7 +48,7 @@ class VGStateRef {
   //@{
   //! Access the state's current volume pointer
   __device__ const Volume* volume() const { return *data_.volume_handle; }
-  __device__ void volume(const Volume* v) { return *data_.volume_handle = v; }
+  __device__ void volume(const Volume* v) { *data_.volume_handle = v; }
   //@}
 
   //@{

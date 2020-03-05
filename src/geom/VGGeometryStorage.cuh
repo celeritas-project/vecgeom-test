@@ -3,15 +3,14 @@
 // See the top-level COPYRIGHT file for details.
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 //---------------------------------------------------------------------------//
-//! \file VGGeometryStorage.cuh
+//! \file VGGeometryDeviceStorage.cuh
 //---------------------------------------------------------------------------//
-#ifndef geom_VGGeometryStorage_cuh
-#define geom_VGGeometryStorage_cuh
+#ifndef geom_VGGeometryDeviceStorage_cuh
+#define geom_VGGeometryDeviceStorage_cuh
 
 #include "VGGeometry.cuh"
 
 namespace celeritas {
-
 //---------------------------------------------------------------------------//
 /*!
  * Manage on-device memory used by our VGGeometry object.
@@ -19,11 +18,16 @@ namespace celeritas {
  * Since this is basically all done by the VGGeometry project code, we don't
  * need to manage much.
  */
-struct VGGeometryStorage {};
+struct VGGeometryStorage {
+  using ConstPtrVolume = VGGeometry::ConstPtrVolume;
+
+  ConstPtrVolume world_volume = nullptr;
+
+  //! Get an on-device object
+  VGGeometry View() const { return VGGeometry({world_volume}); }
+};
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 
-#include "VGGeometryStorage.i.cuh"
-
-#endif  // geom_VGGeometryStorage_cuh
+#endif  // geom_VGGeometryDeviceStorage_cuh

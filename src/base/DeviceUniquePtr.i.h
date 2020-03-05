@@ -5,8 +5,9 @@
 //---------------------------------------------------------------------------//
 //! \file DeviceUniquePtr.i.h
 //---------------------------------------------------------------------------//
-
 #include <cassert>
+
+#include "Macros.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -19,7 +20,7 @@ DeviceUniquePtr<T> DeviceUniqueMalloc() {
   cudaError_t errcode = cudaMalloc(&devptr, sizeof(T));
   assert(errcode == cudaSuccess);
   assert(devptr);
-  return DeviceUniquePtr<T>(devptr);
+  return DeviceUniquePtr<T>(static_cast<T*>(devptr), {});
 }
 
 //---------------------------------------------------------------------------//
