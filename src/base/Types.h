@@ -11,12 +11,12 @@
 namespace celeritas {
 //---------------------------------------------------------------------------//
 template <typename T, std::size_t N>
-class Array;
+class array;
 
 using ssize_type = int;
 using real_type = double;
-using RealPointer3 = Array<real_type*, 3>;
-using Real3 = Array<real_type, 3>;
+using RealPointer3 = array<real_type*, 3>;
+using Real3 = array<real_type, 3>;
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas

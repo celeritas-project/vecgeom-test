@@ -3,10 +3,10 @@
 // See the top-level COPYRIGHT file for details.
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 //---------------------------------------------------------------------------//
-//! \file Array.h
+//! \file array.h
 //---------------------------------------------------------------------------//
-#ifndef base_Array_h
-#define base_Array_h
+#ifndef base_array_h
+#define base_array_h
 
 #include <cstddef>
 
@@ -29,7 +29,7 @@ class span;
  * N=0 for example.
  */
 template <typename T, std::size_t N>
-struct Array {
+struct array {
   //@{
   //! Type aliases
   using value_type = T;
@@ -89,28 +89,28 @@ struct Array {
 //---------------------------------------------------------------------------//
 
 template <typename T, std::size_t N>
-inline CELERITAS_HOST_DEVICE bool operator==(const Array<T, N>& lhs,
-                                             const Array<T, N>& rhs);
+inline CELERITAS_HOST_DEVICE bool operator==(const array<T, N>& lhs,
+                                             const array<T, N>& rhs);
 
 template <typename T, std::size_t N>
-CELERITAS_HOST_DEVICE bool operator!=(const Array<T, N>& lhs,
-                                      const Array<T, N>& rhs);
+CELERITAS_HOST_DEVICE bool operator!=(const array<T, N>& lhs,
+                                      const array<T, N>& rhs);
 
 template <typename T, std::size_t N>
-CELERITAS_HOST_DEVICE void axpy(T a, const Array<T, N>& x, Array<T, N>* y);
+CELERITAS_HOST_DEVICE void axpy(T a, const array<T, N>& x, array<T, N>* y);
 
 //---------------------------------------------------------------------------//
 template <typename T, std::size_t N>
-constexpr CELERITAS_HOST_DEVICE span<T, N> make_span(Array<T, N>& x) {
+constexpr CELERITAS_HOST_DEVICE span<T, N> make_span(array<T, N>& x) {
   return {x.data(), N};
 }
 
 template <typename T, std::size_t N>
 constexpr CELERITAS_HOST_DEVICE span<const T, N> make_span(
-    const Array<T, N>& x) {
+    const array<T, N>& x) {
   return {x.data(), N};
 }
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 
-#endif  // base_Array_h
+#endif  // base_array_h

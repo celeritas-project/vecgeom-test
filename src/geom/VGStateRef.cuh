@@ -11,8 +11,8 @@
 #include <VecGeom/navigation/NavigationState.h>
 #include <VecGeom/volumes/PlacedVolume.h>
 
-#include "base/Array.h"
 #include "base/Types.h"
+#include "base/array.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//

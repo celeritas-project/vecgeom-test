@@ -10,8 +10,8 @@
 
 #include <VecGeom/base/Vector3D.h>
 
-#include "base/Array.h"
-#include "base/Span.h"
+#include "base/array.h"
+#include "base/span.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -26,7 +26,7 @@ inline auto ToVector(span<T, 3> s) -> vecgeom::Vector3D<std::remove_cv_t<T>> {
 //---------------------------------------------------------------------------//
 // Copy a length-3 array into a Vector3D
 template <class T>
-inline auto ToVector(const Array<T, 3>& arr) -> vecgeom::Vector3D<T> {
+inline auto ToVector(const array<T, 3>& arr) -> vecgeom::Vector3D<T> {
   return ToVector(celeritas::make_span<T, 3>(arr));
 }
 
