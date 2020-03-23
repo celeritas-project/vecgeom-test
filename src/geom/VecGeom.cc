@@ -56,12 +56,12 @@ void VecGeom::Construct(VecGeomState* state,
   // Set up current state and locate daughter volume.
   state->vgstate = VgState::MakeInstance(max_depth);
   state->vgstate->Clear();
-  state->volume = geo_manager.GetWorld();
+  const vecgeom::VPlacedVolume* volume = geo_manager.GetWorld();
   const bool contains_point = true;
   // Note that LocateGlobalPoint sets state->vgstate.
-  state->volume = vecgeom::GlobalLocator::LocateGlobalPoint(
-      state->volume, state->pos, *state->vgstate, contains_point);
-  assert(state->volume);
+  volume = vecgeom::GlobalLocator::LocateGlobalPoint(
+      volume, state->pos, *state->vgstate, contains_point);
+  assert(volume);
 
   // Set up next state
   state->vgnext = VgState::MakeInstance(max_depth);
@@ -95,7 +95,7 @@ bool VecGeom::IsInside(const VecGeomState& state) const {
  */
 void VecGeom::FindNextStep(VecGeomState* state) const {
   vecgeom::VNavigator const* navigator =
-      state->volume->GetLogicalVolume()->GetNavigator();
+      state->vgstate->Top()->GetLogicalVolume()->GetNavigator();
   state->next_step = navigator->ComputeStepAndPropagatedState(
       state->pos, state->dir, vecgeom::kInfLength, *state->vgstate,
       *state->vgnext);
@@ -115,7 +115,6 @@ double VecGeom::NextStep(const VecGeomState& state) const {
  */
 void VecGeom::MoveNextStep(VecGeomState* state) const {
   std::swap(state->vgstate, state->vgnext);
-  state->volume = state->vgstate->Top();
   state->pos += state->dir * (state->next_step + this->StepFudge());
   state->vgnext->Clear();
 }

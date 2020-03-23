@@ -44,7 +44,7 @@ void LoadAndTrack(const char* input_filename) {
        << state.Get().dir << endl;
   while (geometry.IsInside(state.Get())) {
     geometry.FindNextStep(&state.Get());
-    const auto* cur_vol = state.Get().volume;
+    const auto* cur_vol = state.Get().vgstate->Top();
     cout << "Step " << state.Get().next_step << " from " << cur_vol->GetLabel()
          << "(id " << cur_vol->id() << ", type " << TypeToString(*cur_vol)
          << ")\n";

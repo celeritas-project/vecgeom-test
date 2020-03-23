@@ -18,7 +18,6 @@ namespace celeritas {
  * State for VecGeom tracking through a geometry.
  */
 struct VecGeomState {
-  const vecgeom::VPlacedVolume *volume;
   vecgeom::NavigationState *vgstate;
   vecgeom::NavigationState *vgnext;
 
