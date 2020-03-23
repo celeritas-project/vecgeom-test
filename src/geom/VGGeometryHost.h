@@ -8,43 +8,39 @@
 #ifndef geom_VGGeometryHost_h
 #define geom_VGGeometryHost_h
 
-#include <iosfwd>
-#include <memory>
+#include <string>
+
+#include "base/OpaqueId.h"
+#include "Definitions.h"
 
 namespace celeritas {
 class RootModel;
-class VGGeometryStorage;
-class VGGeometry;
-template <class T>
-class Mirror;
 
 //---------------------------------------------------------------------------//
 /*!
- * Manage a CUDA VGGeometry geometry.
+ * Wrap a VecGeom geometry definition with convenience functions.
  */
 class VGGeometryHost {
  public:
   //@{
   //! Type aliases
-  using DeviceStorageType = VGGeometryStorage;
-  using DeviceType = VGGeometry;
+  using SpanInt = span<int>;
   //@}
 
  public:
   // Construct from a ROOT model
   explicit VGGeometryHost(const RootModel& model);
 
-  // Copy geometry to device
-  void HostToDevice(VGGeometryStorage* device_storage) const;
-  // Copy simulation data back to host
-  void DeviceToHost(const VGGeometryStorage& device_storage);
+  // >>> ACCESSORS
+
+  // Get the label for a placed volume ID
+  const std::string& IdToLabel(UniqueCellId vol_id) const;
+  // Get the ID corresponding to a label
+  UniqueCellId LabelToId(const std::string& label) const;
 
   // Maximum nested geometry depth
   int MaxDepth() const;
 };
-
-// Create a host/device mirror from a root model and copy to device
-std::shared_ptr<Mirror<VGGeometryHost>> MakeVGMirror(const RootModel& model);
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas

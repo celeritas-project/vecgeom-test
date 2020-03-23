@@ -10,11 +10,7 @@
 
 #include <cstddef>
 
-#ifdef __CUDACC__
-#define CELERITAS_HOST_DEVICE __host__ __device__
-#else
-#define CELERITAS_HOST_DEVICE
-#endif
+#include "Macros.h"
 
 namespace celeritas {
 
@@ -100,16 +96,20 @@ template <typename T, std::size_t N>
 CELERITAS_HOST_DEVICE void axpy(T a, const array<T, N>& x, array<T, N>* y);
 
 //---------------------------------------------------------------------------//
+//! Get a mutable fixed-size view to an array
 template <typename T, std::size_t N>
 constexpr CELERITAS_HOST_DEVICE span<T, N> make_span(array<T, N>& x) {
   return {x.data(), N};
 }
 
+//---------------------------------------------------------------------------//
+//! Get a constant fixed-size view to an array
 template <typename T, std::size_t N>
 constexpr CELERITAS_HOST_DEVICE span<const T, N> make_span(
     const array<T, N>& x) {
   return {x.data(), N};
 }
+
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
 

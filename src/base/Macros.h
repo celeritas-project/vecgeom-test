@@ -8,9 +8,14 @@
 #ifndef base_Macros_h
 #define base_Macros_h
 
-#include <type_traits>
+#ifdef __CUDACC__
+#define CELERITAS_HOST_DEVICE __host__ __device__
+#else
+#define CELERITAS_HOST_DEVICE
+#endif
 
 #if !defined(__CUDACC__) || __CUDACC_VER_MAJOR__ >= 10
+#include <type_traits>
 #define CELERITAS_IS_TRIVIALLY_COPYABLE(T) std::is_trivially_copyable<T>::value
 #else
 // Older CUDA versions
