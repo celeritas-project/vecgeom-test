@@ -10,27 +10,42 @@ All `__device__` and `__global__` code must be compiled with NVCC to generate
 device objects. However, code that merely uses CUDA API calls such as
 `cudaMalloc` does *not* have to be compiled with NVCC. Instead, it only has to
 be linked against the CUDA runtime library and include `cuda_runtime_api.h`.
+The exception to this is VecGeom's code, which compiles differently when run
+through NVCC. (Macro magic puts much of the code in a different namespace.)
 
 Since NVCC is slower and other compilers' warning/error output is more
 readable, it's preferable to use NVCC for as little compilation as possible.
 Furthermore, not requiring NVCC lets us play nicer with downstream libraries
-and front-end apps.
+and front-end apps. Host code will not be restricted to the minimum version
+supported by NVCC (C++14).
 
-Finally, it provides a check against surprise kernel launches. For example,
-trying to compile
+Of course, the standard compilers cannot include any CUDA code containing
+kernel launches, since those require special parsing by the compiler. So kernel
+launches and `__global__` code must be in a `.cu` file. However, the
+CUDA runtime does define the special `__host__` and `__device__` macros (among
+others). Therefore it is OK for a CUDA file to be included by host code as long
+as it `#include`s the CUDA API. (Note that if such a file is to be included by
+downstream code, it will also have to propagate the CUDA include directories.)
+
+Choosing to compile code with the host compiler rather than NVCC also provides
+a check against surprise kernel launches. For example, the declaration
 ```
 thrust::device_vector<double> dv(10);
 ```
 actually launches a kernel to fill the vector's initial state. The code will
-not compile in a `.cc` file run through the host compiler, but it will silently
-generate kernel code when run through NVCC.
+not compile in a `.cc` file run through the host compiler, but it will
+automatically (and silently) generate kernel code when run through NVCC.
 
-Thus we 
+Thus we have the following rules:
 
-- `.cuh` is for header files that contain device code (require NVCC)
+- `.h` is for C++ code compatible with host compilers. It may declare Thrust
+  objects, since thrust type declarations are compatible with the host
+  compiler. It can also use host/device keywords if it includes the cuda
+  runtime api or hides the keywords with macros.
 - `.cu` is for `__global__` kernels and functions that launch them
-- `.h` is for code compatible with host compilers, with no decoration. It may
-  include thrust objects.
+- `.cuh` is for header files that require compilation by NVCC: contain
+  `__device __`-only code or include CUDA directives without `#include
+  <cuda_runtime_api.h>`.
 
 # On-device memory management
 
@@ -98,6 +113,7 @@ trivially with a `std::unique_ptr` that uses a custom deleter. The
 template<class T> using DeviceUniquePtr = std::unique_ptr<T, CudaDeleter>;
 ```
 as well as helper functions for allocating and/or constructing such pointers.
+They can be implicitly converted to shared pointers.
 
 In general, these should be used only for single "persistent" objects as
 opposed to arrays of data and/or objects that are frequently replaced.
@@ -131,3 +147,10 @@ The `Device_View` provides a `get_view()` accessor that returns a
 `Device_View_Field` is exactly equivalent to the Celeritas/C++ `Span`
 object.
 
+## Demo project capability
+
+1. Load a GDML or ROOT file through ROOT's geometry.
+2. Transfer it to VecGeom and offload to GPU.
+3. Track a batch of particles through the geometry, tallying the placed volume
+   (touchable??) track length encountered.
+4. Save to a text file (maybe have Stefano add ROOT output.)

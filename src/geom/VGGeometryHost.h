@@ -11,7 +11,6 @@
 #include <string>
 
 #include "base/OpaqueId.h"
-#include "Definitions.h"
 
 namespace celeritas {
 class RootModel;
@@ -24,7 +23,7 @@ class VGGeometryHost {
  public:
   //@{
   //! Type aliases
-  using SpanInt = span<int>;
+  using IdType = OpaqueId<VGGeometryHost, unsigned int>;
   //@}
 
  public:
@@ -34,12 +33,19 @@ class VGGeometryHost {
   // >>> ACCESSORS
 
   // Get the label for a placed volume ID
-  const std::string& IdToLabel(UniqueCellId vol_id) const;
+  const std::string& IdToLabel(IdType vol_id) const;
   // Get the ID corresponding to a label
-  UniqueCellId LabelToId(const std::string& label) const;
+  IdType LabelToId(const std::string& label) const;
 
-  // Maximum nested geometry depth
-  int MaxDepth() const;
+  //! Maximum nested geometry depth
+  int MaxDepth() const { return max_depth_; }
+
+  //! Off-the-end ID
+  IdType EndId() const { return IdType{max_id_}; }
+
+ private:
+  int max_depth_;
+  unsigned int max_id_;
 };
 
 //---------------------------------------------------------------------------//

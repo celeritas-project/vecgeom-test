@@ -1,25 +1,19 @@
-//----------------------------------*-C++-*----------------------------------//
+//---------------------------------*-CUDA-*----------------------------------//
 // Copyright 2020 UT-Battelle, LLC, and other Celeritas developers.
 // See the top-level COPYRIGHT file for details.
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 //---------------------------------------------------------------------------//
-//! \file Definitions.h
+//! \file KernelParamCalculator.i.cuh
 //---------------------------------------------------------------------------//
-#ifndef geom_Definitions_h
-#define geom_Definitions_h
-
-#include "base/OpaqueId.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
-//@{
-//! Instantiators for geometry IDs
-struct Geometry {};
-//@}
-
-using GeometryId = OpaqueId<Geometry>;
+/*!
+ * Get the linear thread ID.
+ */
+__device__ KernelParamCalculator::dim_type KernelParamCalculator::ThreadId() {
+  return blockIdx.x * blockDim.x + threadIdx.x;
+}
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
-
-#endif // geom_Definitions_h

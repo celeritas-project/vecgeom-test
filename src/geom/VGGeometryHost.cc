@@ -13,24 +13,12 @@
 #include <VecGeom/management/CudaManager.h>
 #include <VecGeom/management/GeoManager.h>
 #include <VecGeom/management/RootGeoManager.h>
+#include <VecGeom/volumes/PlacedVolume.h>
 
 #include "RootModel.h"
 
 using std::cout;
 using std::endl;
-
-namespace {
-unsigned int FindMaxVolumeId() {
-  using CVolPtr = const vecgeom::VPlacedVolume*;
-  std::vector<CVolPtr> volumes;
-  vecgeom::GeoManager::Instance().getAllPlacedVolumes(volumes);
-
-  auto iter = std::max_element(
-      volumes.begin(), volumes.end(),
-      [](CVolPtr left, CVolPtr right) { return left->id() < right->id(); });
-  return (*iter)->id();
-}
-}  // namespace
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
@@ -45,14 +33,16 @@ VGGeometryHost::VGGeometryHost(const RootModel& model) {
   cout << "::: Initializing tracking information" << endl;
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
 
-  num_visits_.resize(FindMaxVolumeId() + 1);
+  max_id_ = vecgeom::VPlacedVolume::GetIdCount();
+  max_depth_ = vecgeom::GeoManager::Instance().getMaxDepth();
 }
 
 //---------------------------------------------------------------------------//
 /*!
  * Get the label for a placed volume ID
  */
-const std::string& VGGeometryHost::IdToLabel(UniqueCellId vol_id) const {
+const std::string& VGGeometryHost::IdToLabel(IdType vol_id) const {
+  assert(vol_id.Get() < max_id_);
   const auto* vol =
       vecgeom::GeoManager::Instance().FindPlacedVolume(vol_id.Get());
   assert(vol);
@@ -63,20 +53,12 @@ const std::string& VGGeometryHost::IdToLabel(UniqueCellId vol_id) const {
 /*!
  * Get the ID corresponding to a label
  */
-auto VGGeometryHost::LabelToId(const std::string& label) const -> UniqueCellId {
+auto VGGeometryHost::LabelToId(const std::string& label) const -> IdType {
   const auto* vol =
       vecgeom::GeoManager::Instance().FindPlacedVolume(label.c_str());
   assert(vol);
-  return UniqueCellId{vol->id()};
-}
-
-//---------------------------------------------------------------------------//
-/*!
- * Maximum nested geometry depth, needed for navigation state allocation
- */
-int VGGeometryHost::MaxDepth() const {
-  const auto& geo_manager = vecgeom::GeoManager::Instance();
-  return geo_manager.getMaxDepth();
+  assert(vol->id() < max_id_);
+  return IdType{vol->id()};
 }
 
 //---------------------------------------------------------------------------//

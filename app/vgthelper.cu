@@ -1,25 +1,22 @@
-//----------------------------------*-C++-*----------------------------------//
+//---------------------------------*-CUDA-*----------------------------------//
 // Copyright 2020 UT-Battelle, LLC, and other Celeritas developers.
 // See the top-level COPYRIGHT file for details.
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 //---------------------------------------------------------------------------//
-//! \file Definitions.h
+//! \file vgthelper.cu
 //---------------------------------------------------------------------------//
-#ifndef geom_Definitions_h
-#define geom_Definitions_h
+#include <cassert>
 
-#include "base/OpaqueId.h"
+#include "base/KernelParamCalculator.cuh"
+#include "geom/VGGeometryAdapter.cuh"
+#include "vgthelper.h"
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
-//@{
-//! Instantiators for geometry IDs
-struct Geometry {};
-//@}
 
-using GeometryId = OpaqueId<Geometry>;
+void RunTransport(std::shared_ptr<celeritas::VGGeometryHost> geo, int ntracks) {
+  VGGeometryAdapter adapter(geo);
+}
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
-
-#endif // geom_Definitions_h

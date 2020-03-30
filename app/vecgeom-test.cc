@@ -14,16 +14,17 @@
 
 #include "geom/RootModel.h"
 #include "geom/VGGeometryHost.h"
+#include "vgthelper.h"
 
 using celeritas::RootModel;
 
 void LoadAndTrack(const char* input_filename) {
   // Load model
   RootModel model(input_filename);
-  model.PrintGeometry(std::cout);
-
-  // Create host-device mirror
-  auto geom_mirror_sp = celeritas::MakeVGMirror(model);
+  // Create host geometry
+  auto host_geom = std::make_shared<celeritas::VGGeometryHost>(model);
+  // Call transport-and-io
+  celeritas::RunTransport(host_geom, 1024);
 }
 
 int main(int argc, char *argv[]) {

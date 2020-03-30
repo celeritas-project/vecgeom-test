@@ -19,10 +19,11 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_CONFIG_NAME}"
 #----------------------------------------------------------------------------#
 
 add_library(celeritas
+  base/KernelParamCalculator.cu
   base/ScopeRootMessages.cc
   geom/RootModel.cc
+  geom/VGGeometryAdapter.cu
   geom/VGGeometryHost.cc
-  geom/VGGeometryHost.cu
   geom/VGStateContainer.cu
 )
 target_link_libraries(celeritas

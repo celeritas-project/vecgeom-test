@@ -9,7 +9,7 @@ cd build
 
 # Note: vecgeom doesn't correctly export RPATH information, so we have to add
 # it manually this way
-module load vecgeom veccore root
+module load vecgeom veccore
 
 cmake -C ${BUILDSCRIPT_DIR}/vostok.cmake -G Ninja \
   -DCMAKE_INSTALL_PREFIX:PATH=$SOURCE_DIR/install \
