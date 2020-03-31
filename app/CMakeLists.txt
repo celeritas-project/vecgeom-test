@@ -9,6 +9,7 @@ target_link_libraries(vecgeom-test VecGeom::VecGeom celeritas)
 set_target_properties(vecgeom-test PROPERTIES
   CXX_STANDARD 14
   CXX_EXTENSIONS OFF
+  LINKER_LANGUAGE CUDA
 )
 
 install(TARGETS vecgeom-test

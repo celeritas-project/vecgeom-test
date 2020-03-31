@@ -43,6 +43,7 @@ if (VGT_USE_CUDA)
       "was configured without CUDA, so VGT_USE_CUDA cannot be used")
   endif()
   enable_language(CUDA)
+  set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 endif()
 
 #---------------------------------------------------------------------------##
@@ -56,8 +57,5 @@ add_subdirectory(src)
 #---------------------------------------------------------------------------##
 
 add_subdirectory(app)
-if (VGT_USE_CUDA)
-  add_subdirectory(test)
-endif()
 
 #---------------------------------------------------------------------------##

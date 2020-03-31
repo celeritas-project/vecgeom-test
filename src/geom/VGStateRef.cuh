@@ -46,15 +46,14 @@ class VGStateRef {
   explicit __device__ VGStateRef(const Params& params) : data_(params) {}
 
   //@{
-  //! Access the state's current volume pointer
-  __device__ const Volume* volume() const { return *data_.volume_handle; }
-  __device__ void volume(const Volume* v) { *data_.volume_handle = v; }
-  //@}
-
-  //@{
   //! Access the state's current VecGeom navigation state
   __device__ const NavState& vgstate() const { return *data_.vgstate; }
   __device__ NavState& vgstate() { return *data_.vgstate; }
+  //@}
+
+  //@{
+  //! Access the state's current volume pointer
+  __device__ const Volume* volume() const { return this->vgstate().Top(); }
   //@}
 
   //@{

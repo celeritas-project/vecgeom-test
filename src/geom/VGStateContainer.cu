@@ -16,7 +16,6 @@ namespace celeritas {
 VGStateContainer::VGStateContainer(ssize_type size, const VGGeometryHost& geom)
     : size_(size),
       vgmaxdepth_(geom.MaxDepth()),
-      volume_ptrs_(size_),
       vgstate_(size_, vgmaxdepth_),
       vgnext_(size_, vgmaxdepth_),
       pos_(size_),

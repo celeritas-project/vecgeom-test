@@ -11,7 +11,6 @@
 #define base_DeviceUniquePtr_h
 
 #include <memory>
-
 #include <cuda_runtime_api.h>
 
 namespace celeritas {

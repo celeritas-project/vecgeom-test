@@ -39,7 +39,7 @@ class KernelParamCalculator {
   explicit __host__ KernelParamCalculator(dim_type block_size = 256);
 
   // Get launch parameters
-  LaunchParams operator()(std::size_t min_num_threads);
+  LaunchParams operator()(std::size_t min_num_threads) const;
 
   // Get the thread ID
   __device__ inline static dim_type ThreadId();

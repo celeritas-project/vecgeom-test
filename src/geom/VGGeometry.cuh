@@ -10,6 +10,7 @@
 
 #include <VecGeom/volumes/PlacedVolume.h>
 
+#include "Definitions.h"
 #include "InitialStateRef.cuh"
 #include "VGStateRef.cuh"
 #include "base/Types.h"
@@ -26,6 +27,7 @@ class VGGeometry {
   using Volume = vecgeom::cuda::VPlacedVolume;
   using ConstPtrVolume = const Volume*;
   using StateRef = VGStateRef;
+  using IdType = GeometryId;
   //@}
 
   //! Construction parameters
@@ -42,6 +44,9 @@ class VGGeometry {
 
   // Whether the state is inside the geometry
   __device__ inline bool IsInside(const StateRef& state) const;
+
+  // The unique "placed" volume ID in the geometry
+  __device__ inline IdType Id(const StateRef& state) const;
 
   // Calculate the distance to the next boundary crossing
   __device__ inline void FindNextStep(StateRef& state) const;

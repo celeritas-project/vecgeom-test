@@ -13,12 +13,12 @@ namespace celeritas {
  */
 template <typename T, std::size_t N>
 CELERITAS_HOST_DEVICE bool operator==(const array<T, N>& lhs,
-                                      const array<T, N>& rhs);
-for (std::size_t i = 0; i != N; ++i) {
-  if (lhs[i] != rhs[i]) return false;
+                                      const array<T, N>& rhs) {
+  for (std::size_t i = 0; i != N; ++i) {
+    if (lhs[i] != rhs[i]) return false;
+  }
+  return true;
 }
-return true;
-}  // namespace celeritas
 
 //---------------------------------------------------------------------------//
 /*!

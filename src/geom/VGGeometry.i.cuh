@@ -26,13 +26,11 @@ __device__ void VGGeometry::Construct(StateRef& state,
   // Set up current state and locate daughter volume.
   // Note that LocateGlobalPoint sets state->vgstate.
   state.vgstate().Clear();
-  auto volume = data_.world_volume;
+  ConstPtrVolume volume = data_.world_volume;
   const bool contains_point = true;
   volume = vecgeom::GlobalLocator::LocateGlobalPoint(
       volume, ToVector(state.pos()), state.vgstate(), contains_point);
-
   // assert(volume);
-  state.volume(volume);
 
   // Set up next state
   state.vgstate().Clear();
@@ -45,6 +43,14 @@ __device__ void VGGeometry::Construct(StateRef& state,
  */
 __device__ bool VGGeometry::IsInside(const StateRef& state) const {
   return !state.vgstate().IsOutside();
+}
+
+//---------------------------------------------------------------------------//
+/*!
+ * Return the unique "placed" volume ID in the geometry
+ */
+__device__ VGGeometry::IdType VGGeometry::Id(const StateRef& state) const {
+  return IdType{state.volume()->id()};
 }
 
 //---------------------------------------------------------------------------//
@@ -73,7 +79,6 @@ __device__ real_type VGGeometry::NextStep(const StateRef& state) const {
  */
 __device__ void VGGeometry::MoveNextStep(StateRef& state) const {
   state.vgstate() = state.vgnext();
-  state.volume(state.vgstate().Top());
   state.vgnext().Clear();
 
   // Move the next step plus an extra fudge distance

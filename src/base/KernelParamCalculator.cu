@@ -32,8 +32,8 @@ __host__ KernelParamCalculator::KernelParamCalculator(dim_type size)
 /*!
  * \brief Calculate launch params given the number of threads
  */
-__host__ KernelParamCalculator::LaunchParams
-KernelParamCalculator::operator()(std::size_t min_num_threads) {
+__host__ KernelParamCalculator::LaunchParams KernelParamCalculator::operator()(
+    std::size_t min_num_threads) const {
   assert(min_num_threads > 0);
   assert(min_num_threads <=
          static_cast<std::size_t>(std::numeric_limits<dim_type>::max()));

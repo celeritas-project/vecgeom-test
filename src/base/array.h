@@ -89,11 +89,12 @@ inline CELERITAS_HOST_DEVICE bool operator==(const array<T, N>& lhs,
                                              const array<T, N>& rhs);
 
 template <typename T, std::size_t N>
-CELERITAS_HOST_DEVICE bool operator!=(const array<T, N>& lhs,
-                                      const array<T, N>& rhs);
+inline CELERITAS_HOST_DEVICE bool operator!=(const array<T, N>& lhs,
+                                             const array<T, N>& rhs);
 
 template <typename T, std::size_t N>
-CELERITAS_HOST_DEVICE void axpy(T a, const array<T, N>& x, array<T, N>* y);
+inline CELERITAS_HOST_DEVICE void axpy(T a, const array<T, N>& x,
+                                       array<T, N>* y);
 
 //---------------------------------------------------------------------------//
 //! Get a mutable fixed-size view to an array
@@ -112,5 +113,7 @@ constexpr CELERITAS_HOST_DEVICE span<const T, N> make_span(
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
+
+#include "array.i.h"
 
 #endif  // base_array_h

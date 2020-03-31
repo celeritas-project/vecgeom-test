@@ -13,12 +13,7 @@
 namespace celeritas {
 //---------------------------------------------------------------------------//
 /*!
- * Brief class description.
- *
- * Optional detailed class description, and possibly example usage:
- * \code
-  InitialStateRef ...;
-   \endcode
+ * Initial position/direction for a single track.
  */
 class InitialStateRef {
  public:

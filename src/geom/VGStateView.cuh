@@ -39,7 +39,6 @@ class VGStateView {
   struct Params {
     ssize_type size = 0;
     ssize_type vgmaxdepth = 0;
-    ConstPtrVolume* volume_handle = nullptr;
     void* vgstate = nullptr;
     void* vgnext = nullptr;
 
@@ -58,7 +57,6 @@ class VGStateView {
   //! Get a reference to the local state for a thread
   __device__ value_type operator[](ssize_type idx) const {
     VGStateRef::Params params;
-    params.volume_handle = data_.volume_handle + idx;
     params.vgstate = this->GetNavState(data_.vgstate, idx);
     params.vgnext = this->GetNavState(data_.vgnext, idx);
     params.pos = data_.pos + idx;

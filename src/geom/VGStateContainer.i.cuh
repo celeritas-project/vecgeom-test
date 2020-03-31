@@ -13,13 +13,12 @@ namespace celeritas {
 /*!
  * Emit a device view.
  */
-VGStateView VGStateContainer::View() {
+VGStateView VGStateContainer::DeviceView() {
   using thrust::raw_pointer_cast;
 
   VGStateView::Params params;
   params.size = size_;
   params.vgmaxdepth = vgmaxdepth_;
-  params.volume_handle = raw_pointer_cast(volume_ptrs_.data());
   params.vgstate = vgstate_.GetGPUPointer();
   params.vgnext = vgnext_.GetGPUPointer();
   params.pos = raw_pointer_cast(pos_.data());

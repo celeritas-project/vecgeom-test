@@ -26,7 +26,6 @@ class VGStateContainer {
   //@{
   //! Type aliases
   using ssize_type = celeritas::ssize_type;
-  using Volume = vecgeom::cuda::VPlacedVolume;
   //@}
 
  public:
@@ -34,15 +33,14 @@ class VGStateContainer {
   VGStateContainer(ssize_type size, const VGGeometryHost& host);
 
   // Emit a view to on-device memory
-  inline VGStateView View();
+  inline VGStateView DeviceView();
 
   //! Number of states
-  ssize_type Size() const { return size_; }
+  ssize_type size() const { return size_; }
 
  private:
   ssize_type size_ = 0;
   ssize_type vgmaxdepth_ = 0;
-  thrust::device_vector<const Volume*> volume_ptrs_;
   vecgeom::cuda::NavStatePool vgstate_;
   vecgeom::cuda::NavStatePool vgnext_;
   thrust::device_vector<Real3> pos_;
