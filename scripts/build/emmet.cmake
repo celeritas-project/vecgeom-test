@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "")
 
 # Use CUDA
 set(VGT_USE_CUDA ON CACHE BOOL "")
+set(BUILD_SHARED_LIBS ON CACHE BOOL "")
 
 # Enable color diagnostics when using Ninja
 foreach(LANG C CXX)

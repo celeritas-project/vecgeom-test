@@ -14,7 +14,7 @@
 
 #include "geom/RootModel.h"
 #include "geom/VGGeometryHost.h"
-#include "vgthelper.h"
+#include "transport/vgthelper.h"
 
 using celeritas::RootModel;
 

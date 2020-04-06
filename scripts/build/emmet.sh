@@ -7,9 +7,8 @@ cd $SOURCE_DIR
 mkdir build 2>/dev/null || true
 cd build
 
-# Note: vecgeom doesn't correctly export RPATH information, so we have to add
-# it manually this way
-module load vecgeom veccore root
+ml purge
+module load cmake ninja-fortran cuda vecgeom veccore root
 
 cmake -C ${BUILDSCRIPT_DIR}/emmet.cmake -G Ninja \
   -DCMAKE_INSTALL_PREFIX:PATH=$SOURCE_DIR/install \
