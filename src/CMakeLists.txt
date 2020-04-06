@@ -28,6 +28,7 @@ add_library(celeritas
   base/ScopeRootMessages.cc
   geom/RootModel.cc
   geom/VGGeometryHost.cc
+  transport/vgthelper-dispatch.cc
 )
 target_link_libraries(celeritas
   PUBLIC VecGeom::VecGeom ROOT::Geom ROOT::Core

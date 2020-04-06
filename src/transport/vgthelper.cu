@@ -24,11 +24,11 @@ __device__ void transport_one(const VGGeometry& geo, VGStateRef state) {
   Real3 pos{-100, 0, 0};
   Real3 dir{1, 0, 0};
   InitialStateRef primary({&pos, &dir});
-  geo.Construct(state, primary);
+  // geo.Construct(state, primary);
   while (geo.IsInside(state)) {
-    geo.FindNextStep(state);
+    // geo.FindNextStep(state);
     // tal.CellTally(geo.Id(state), geo.NextStep(state));
-    geo.MoveNextStep(state);
+    // geo.MoveNextStep(state);
   }
 }
 
@@ -45,8 +45,8 @@ __global__ void transport_all(VGGeometry geometry, VGStateView states) {
 
 //---------------------------------------------------------------------------//
 
-__host__ void RunTransport(std::shared_ptr<celeritas::VGGeometryHost> geo,
-                           int ntracks) {
+__host__ void RunTransportCuda(std::shared_ptr<celeritas::VGGeometryHost> geo,
+                               int ntracks) {
   VGGeometryAdapter adapter(geo);
   adapter.HostToDevice();
 

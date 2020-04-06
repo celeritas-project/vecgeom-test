@@ -14,6 +14,8 @@
 
 namespace celeritas {
 //---------------------------------------------------------------------------//
+void RunTransportCuda(std::shared_ptr<celeritas::VGGeometryHost> geo,
+                      int ntracks);
 void RunTransport(std::shared_ptr<celeritas::VGGeometryHost> geo, int ntracks);
 
 //---------------------------------------------------------------------------//
