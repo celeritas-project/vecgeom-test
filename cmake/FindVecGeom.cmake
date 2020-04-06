@@ -17,6 +17,7 @@ Find VecGeom and define modern CMake targets.
 This script changes the scope of VecGeom definitions from *global* to
 *target*-based.
 
+
 #]=======================================================================]
 
 # Save compile definitions to reverse VecGeom's global add_definitions call
@@ -38,10 +39,15 @@ if(VECGEOM_FOUND AND NOT TARGET "${_VG_TARGET}")
     list(APPEND VECGEOM_DEF_LIST "${_DEF}")
   endforeach()
 
-  # Split libraries into "primary" and "dependencies"
-  # XXX POP_BACK requires CMake 3.15 or higher
-  # set(VECGEOM_DEP_LIBRARIES VECGEOM_LIBRARIES)
-  # list(POP_BACK VECGEOM_DEP_LIBRARIES _VG_LIBRARY)
+
+  # Split libraries into "cuda" "primary" and "dependencies"
+  if(VECGEOM_CUDA_STATIC_LIBRARY)
+    list(GET VECGEOM_LIBRARIES -1 _VG_LIBRARY)
+    if(_VG_LIBRARY MATCHES "cuda")
+      list(REMOVE_AT VECGEOM_LIBRARIES -1)
+    endif()
+  endif()
+
   list(GET VECGEOM_LIBRARIES -1 _VG_LIBRARY)
   set(VECGEOM_DEP_LIBRARIES "${VECGEOM_LIBRARIES}")
   list(REMOVE_AT VECGEOM_DEP_LIBRARIES -1)
@@ -70,6 +76,8 @@ if(VECGEOM_FOUND AND NOT TARGET "${_VG_TARGET}")
     INTERFACE_COMPILE_OPTIONS
       "$<$<COMPILE_LANGUAGE:CXX>:${VECGEOM_COMPILE_OPTIONS}>"
   )
+  message(STATUS "VECGEOM_DEP_LIBRARIES: ${VECGEOM_DEP_LIBRARIES}")
+  message(STATUS "VECGEOM_LIBRARY: ${VECGEOM_LIBRARY}")
 
   if(VECGEOM_CUDA_STATIC_LIBRARY)
     get_filename_component(_VG_CUDA_STATIC "${VECGEOM_CUDA_STATIC_LIBRARY}" REALPATH CACHE)
@@ -79,9 +87,10 @@ if(VECGEOM_FOUND AND NOT TARGET "${_VG_TARGET}")
       IMPORTED_LOCATION "${_VG_CUDA_STATIC}"
       IMPORTED_LINK_INTERFACE_LANGUAGES CUDA
       CUDA_SEPARABLE_COMPILATION ON
-    )
-    # Propagate include dependencies as well
-    target_link_libraries(${_VG_CUDA_TARGET} INTERFACE ${_VG_TARGET})
+      INTERFACE_INCLUDE_DIRECTORIES "${_VG_INCLUDE_DIRS}"
+      INTERFACE_COMPILE_DEFINITIONS "${VECGEOM_DEF_LIST}"
+      INTERFACE_COMPILE_OPTIONS
+        "$<$<COMPILE_LANGUAGE:CXX>:${VECGEOM_COMPILE_OPTIONS}>")
   endif()
 endif()
 

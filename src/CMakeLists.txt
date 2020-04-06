@@ -15,13 +15,14 @@ add_library(celeritas_cuda STATIC
   transport/vgthelper.cu
 )
 target_link_libraries(celeritas_cuda
-  PRIVATE VecGeom::Cuda VecGeom::VecGeom)
+  PRIVATE VecGeom::Cuda)
 set_target_properties(celeritas_cuda PROPERTIES
   CUDA_STANDARD 14
   CUDA_EXTENSIONS OFF
   LINKER_LANGUAGE CUDA
-  CUDA_SEPARABLE_COMPILATION ON
+  #CUDA_SEPARABLE_COMPILATION ON
   CUDA_RESOLVE_DEVICE_SYMBOLS ON # Don't defer symbol resolution
+  POSITION_INDEPENDENT_CODE ON
 )
 
 add_library(celeritas
