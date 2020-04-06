@@ -5,7 +5,7 @@
 #----------------------------------------------------------------------------#
 
 cmake_minimum_required(VERSION 3.10)
-project(VecGeomTest VERSION 0.0.1 LANGUAGES CXX)
+project(VecGeomTest VERSION 0.0.1 LANGUAGES CXX CUDA)
 cmake_policy(SET CMP0074 NEW) # Use $ENV{<package>_ROOT} to find packages
 
 include(GNUInstallDirs)
@@ -17,7 +17,6 @@ include(VgtUtils)
 #---------------------------------------------------------------------------##
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(VGT_USE_CUDA "Build with CUDA support" OFF)
 
 # Set up rpaths
 if (NOT DEFINED CMAKE_INSTALL_RPATH_USE_LINK_PATH)
@@ -37,13 +36,9 @@ endif()
 find_package(ROOT REQUIRED)
 find_package(VecGeom REQUIRED)
 
-if (VGT_USE_CUDA)
-  if (VECGEOM_CUDA_ARCH STREQUAL "none")
-    message(FATAL_ERROR "The VecGeom installation at ${VECGEOM_INSTALL_DIR} "
-      "was configured without CUDA, so VGT_USE_CUDA cannot be used")
-  endif()
-  enable_language(CUDA)
-  #set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
+if (VECGEOM_CUDA_ARCH STREQUAL "none")
+  message(FATAL_ERROR "The VecGeom installation at ${VECGEOM_INSTALL_DIR} "
+    "was configured without CUDA, so VGT_USE_CUDA cannot be used")
 endif()
 
 #---------------------------------------------------------------------------##
