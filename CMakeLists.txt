@@ -17,6 +17,7 @@ include(VgtUtils)
 #---------------------------------------------------------------------------##
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(VGT_USE_ROOT "Support reading geometry through ROOT" ON)
 
 # Set up rpaths
 if (NOT DEFINED CMAKE_INSTALL_RPATH_USE_LINK_PATH)
@@ -29,11 +30,19 @@ if (BUILD_SHARED_LIBS)
       "Inform installed binaries of internal library rpaths")
 endif()
 
+# Default to debug build
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "CMake build type" FORCE)
+  message(STATUS "Set default CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
+endif()
+# Default to "device debug" for CUDA compilation
+set(CMAKE_CUDA_FLAGS_DEBUG "-g -G" CACHE STRING "NVCC debug compile flags")
+
 #---------------------------------------------------------------------------##
 # DEPENDENCIES
 #---------------------------------------------------------------------------##
 
-find_package(ROOT REQUIRED)
+find_package(ROOT)
 find_package(VecGeom REQUIRED)
 
 if (VECGEOM_CUDA_ARCH STREQUAL "none")

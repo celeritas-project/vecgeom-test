@@ -9,6 +9,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "")
 
 # Use CUDA
 set(BUILD_SHARED_LIBS ON CACHE BOOL "")
+set(CMAKE_CUDA_FLAGS "-arch=sm_35" CACHE STRING "")
+set(CMAKE_CUDA_FLAGS_DEBUG "-g -G" CACHE STRING "")
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "")
 
 # Enable color diagnostics when using Ninja
 foreach(LANG C CXX)

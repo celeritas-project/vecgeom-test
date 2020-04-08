@@ -27,7 +27,15 @@ void VGGeometryAdapter::HostToDevice() {
   auto& cuda_manager = vecgeom::cxx::CudaManager::Instance();
   cuda_manager.set_verbose(1);
   cuda_manager.LoadGeometry();
-  cuda_manager.Synchronize();
+  cudaError_t result = cudaDeviceSynchronize();
+  assert(result == cudaSuccess);
+
+  auto world_top = cuda_manager.Synchronize();
+  assert(world_top != nullptr);
+  result = cudaDeviceSynchronize();
+  assert(result == cudaSuccess);
+  cout << "::: Synchronized successfully!" << endl;
+
   world_volume_ = cuda_manager.world_gpu();
 }
 //---------------------------------------------------------------------------//
