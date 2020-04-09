@@ -12,17 +12,12 @@
 #include <string>
 #include <vector>
 
-#include "geom/RootModel.h"
 #include "geom/VGGeometryHost.h"
 #include "transport/vgthelper.h"
 
-using celeritas::RootModel;
-
 void LoadAndTrack(const char* input_filename) {
-  // Load model
-  RootModel model(input_filename);
   // Create host geometry
-  auto host_geom = std::make_shared<celeritas::VGGeometryHost>(model);
+  auto host_geom = std::make_shared<celeritas::VGGeometryHost>(input_filename);
   // Call transport-and-io
   celeritas::RunTransport(host_geom, 1024);
 }

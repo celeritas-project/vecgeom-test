@@ -9,13 +9,12 @@
 
 #include <iostream>
 
+#include <VecGeom/gdml/Frontend.h>
 #include <VecGeom/management/ABBoxManager.h>
 #include <VecGeom/management/CudaManager.h>
 #include <VecGeom/management/GeoManager.h>
-#include <VecGeom/management/RootGeoManager.h>
 #include <VecGeom/volumes/PlacedVolume.h>
 
-#include "RootModel.h"
 
 using std::cout;
 using std::endl;
@@ -25,11 +24,11 @@ namespace celeritas {
 // MANAGEMENT
 //---------------------------------------------------------------------------//
 /*!
- * Construct from a ROOT model.
+ * Construct from a GDML input.
  */
-VGGeometryHost::VGGeometryHost(const RootModel& model) {
-  cout << "::: Converting ROOT to VGGeometry" << endl;
-  vecgeom::RootGeoManager::Instance().LoadRootGeometry();
+VGGeometryHost::VGGeometryHost(const char* gdml_filename) {
+  cout << "::: Loading from GDML" << endl;
+  vgdml::Frontend::Load(gdml_filename);
   cout << "::: Initializing tracking information" << endl;
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
 

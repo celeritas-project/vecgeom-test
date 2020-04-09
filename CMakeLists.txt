@@ -42,7 +42,6 @@ set(CMAKE_CUDA_FLAGS_DEBUG "-g -G" CACHE STRING "NVCC debug compile flags")
 # DEPENDENCIES
 #---------------------------------------------------------------------------##
 
-find_package(ROOT)
 find_package(VecGeom REQUIRED)
 
 if (VECGEOM_CUDA_ARCH STREQUAL "none")

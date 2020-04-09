@@ -13,7 +13,6 @@
 #include "base/OpaqueId.h"
 
 namespace celeritas {
-class RootModel;
 
 //---------------------------------------------------------------------------//
 /*!
@@ -27,8 +26,8 @@ class VGGeometryHost {
   //@}
 
  public:
-  // Construct from a ROOT model
-  explicit VGGeometryHost(const RootModel& model);
+  // Construct from a GDML filename
+  explicit VGGeometryHost(const char* gdml_filename);
 
   // >>> ACCESSORS
 

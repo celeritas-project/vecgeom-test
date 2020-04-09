@@ -26,13 +26,11 @@ set_target_properties(celeritas_cuda PROPERTIES
 )
 
 add_library(celeritas
-  base/ScopeRootMessages.cc
-  geom/RootModel.cc
   geom/VGGeometryHost.cc
   transport/vgthelper-dispatch.cc
 )
 target_link_libraries(celeritas
-  PUBLIC VecGeom::VecGeom ROOT::Geom ROOT::Core
+  PUBLIC VecGeom::VecGeom VecGeom::VGDML
   PRIVATE celeritas_cuda)
 set_target_properties(celeritas PROPERTIES
   CXX_STANDARD 14

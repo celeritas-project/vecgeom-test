@@ -8,7 +8,8 @@ mkdir build 2>/dev/null || true
 cd build
 
 ml purge
-module load cmake ninja-fortran cuda vecgeom/1.1.6-c++14-cuda veccore root
+module load \
+  cmake ninja-fortran cuda vecgeom/1.1.6-c++14-cuda veccore root xerces-c
 
 cmake -C ${BUILDSCRIPT_DIR}/emmet.cmake -G Ninja \
   -DCMAKE_INSTALL_PREFIX:PATH=$SOURCE_DIR/install \
