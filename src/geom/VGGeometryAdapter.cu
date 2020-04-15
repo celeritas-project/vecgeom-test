@@ -34,7 +34,7 @@ void VGGeometryAdapter::HostToDevice() {
   assert(world_top != nullptr);
   result = cudaDeviceSynchronize();
   assert(result == cudaSuccess);
-  cout << "::: Synchronized successfully!" << endl;
+  cout << ">>> Synchronized successfully!" << endl;
 
   world_volume_ = cuda_manager.world_gpu();
 }
