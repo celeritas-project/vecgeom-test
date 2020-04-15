@@ -25,9 +25,9 @@ namespace celeritas {
  * Transport a particle on a single thread.
  */
 __device__ void transport_one(const VGGeometry& geo, VGStateRef state) {
-  Real3 pos{-100, 0, 0};
-  Real3 dir{1, 0, 0};
-  InitialStateRef primary({&pos, &dir});
+  // Real3 pos{-100, 0, 0};
+  // Real3 dir{1, 0, 0};
+  // InitialStateRef primary({&pos, &dir});
   // geo.Construct(state, primary);
   while (geo.IsInside(state)) {
     // geo.FindNextStep(state);
@@ -59,8 +59,15 @@ __host__ void RunTransportCuda(std::shared_ptr<celeritas::VGGeometryHost> geo,
   cout << "::: Launching transport kernel" << endl;
   KernelParamCalculator calc_kernel_params;
   auto launch_params = calc_kernel_params(states.size());
+  auto state_view = states.DeviceView();
+  cout << ">>> Kernel params: " << launch_params.grid_size.x
+       << "blocks each with " << launch_params.block_size.x << " threads"
+       << endl;
+  cout << "State view: vgstate=" << state_view.data().vgstate
+       << ", size=" << state_view.data().size
+       << ", depth=" << state_view.data().vgmaxdepth << endl;
   transport_all<<<launch_params.grid_size, launch_params.block_size>>>(
-      adapter.DeviceView(), states.DeviceView());
+      adapter.DeviceView(), state_view);
   cudaError_t result = cudaDeviceSynchronize();
   if (result != cudaSuccess) {
     cout << "!!! Error " << result << ": " << cudaGetErrorString(result)

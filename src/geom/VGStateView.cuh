@@ -49,7 +49,13 @@ class VGStateView {
 
  public:
   //! Construct with invariant parameters
-  explicit VGStateView(const Params& params) : data_(params) {}
+  explicit VGStateView(const Params& params) : data_(params) {
+    assert(data_.vgstate);
+    assert(data_.vgnext);
+    assert(data_.pos);
+    assert(data_.dir);
+    assert(data_.next_step);
+  }
 
   //! Number of states
   __device__ size_type size() const { return data_.size; }
@@ -64,6 +70,8 @@ class VGStateView {
     params.next_step = data_.next_step + idx;
     return value_type(params);
   }
+
+  __host__ __device__ const Params& data() const { return data_; }
 
  private:
   __device__ NavState* GetNavState(void* state, ssize_type idx) const {
