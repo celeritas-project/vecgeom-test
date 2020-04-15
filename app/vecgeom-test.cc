@@ -24,7 +24,7 @@ void LoadAndTrack(const char* input_filename) {
   // Create host geometry
   auto host_geom = std::make_shared<celeritas::VGGeometryHost>(model);
   // Call transport-and-io
-  celeritas::RunTransport(host_geom, 1024);
+  celeritas::RunTransport(host_geom, 2);
 }
 
 int main(int argc, char *argv[]) {

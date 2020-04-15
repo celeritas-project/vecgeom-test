@@ -5,6 +5,8 @@
 //---------------------------------------------------------------------------//
 //! \file VGStateContainer.cu
 //---------------------------------------------------------------------------//
+#include <cassert>
+
 #include "VGGeometryHost.h"
 #include "VGStateContainer.cuh"
 
@@ -20,7 +22,12 @@ VGStateContainer::VGStateContainer(ssize_type size, const VGGeometryHost& geom)
       vgnext_(size_, vgmaxdepth_),
       pos_(size_),
       dir_(size_),
-      next_step_(size_) {}
+      next_step_(size_) {
+  vgstate_.CopyToGpu();
+  vgnext_.CopyToGpu();
+  assert(vgstate_.GetGPUPointer());
+  assert(vgnext_.GetGPUPointer());
+}
 
 //---------------------------------------------------------------------------//
 }  // namespace celeritas
