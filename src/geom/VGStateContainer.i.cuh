@@ -19,8 +19,8 @@ VGStateView VGStateContainer::DeviceView() {
   VGStateView::Params params;
   params.size = size_;
   params.vgmaxdepth = vgmaxdepth_;
-  params.vgstate = vgstate_.GetGPUPointer();
-  params.vgnext = vgnext_.GetGPUPointer();
+  params.vgstate = vgstate_.DevicePointer();
+  params.vgnext = vgnext_.DevicePointer();
   params.pos = raw_pointer_cast(pos_.data());
   params.dir = raw_pointer_cast(dir_.data());
   params.next_step = raw_pointer_cast(next_step_.data());

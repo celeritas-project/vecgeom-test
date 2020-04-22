@@ -27,6 +27,7 @@ set_target_properties(celeritas_cuda PROPERTIES
 
 add_library(celeritas
   geom/VGGeometryHost.cc
+  geom/detail/VGNavStatePool.cc
   transport/vgthelper-dispatch.cc
 )
 target_link_libraries(celeritas

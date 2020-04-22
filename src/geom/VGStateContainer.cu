@@ -23,10 +23,6 @@ VGStateContainer::VGStateContainer(ssize_type size, const VGGeometryHost& geom)
       pos_(size_),
       dir_(size_),
       next_step_(size_) {
-  vgstate_.CopyToGpu();
-  vgnext_.CopyToGpu();
-  assert(vgstate_.GetGPUPointer());
-  assert(vgnext_.GetGPUPointer());
 }
 
 //---------------------------------------------------------------------------//
