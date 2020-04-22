@@ -29,6 +29,7 @@ add_library(celeritas
   base/ScopeRootMessages.cc
   geom/RootModel.cc
   geom/VGGeometryHost.cc
+  geom/detail/VGNavStatePool.cc
   transport/vgthelper-dispatch.cc
 )
 target_link_libraries(celeritas

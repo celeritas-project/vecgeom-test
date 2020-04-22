@@ -8,11 +8,11 @@
 #ifndef geom_VGStateContainer_cuh
 #define geom_VGStateContainer_cuh
 
-#include <VecGeom/navigation/NavStatePool.h>
 #include <thrust/device_vector.h>
 
 #include "VGStateView.cuh"
 #include "base/Types.h"
+#include "detail/VGNavStatePool.h"
 
 namespace celeritas {
 class VGGeometryHost;
@@ -29,6 +29,9 @@ class VGStateContainer {
   //@}
 
  public:
+  // Default constructor
+  VGStateContainer();
+
   // Construct from number of states and the root geometry model
   VGStateContainer(ssize_type size, const VGGeometryHost& host);
 
@@ -41,8 +44,8 @@ class VGStateContainer {
  private:
   ssize_type size_ = 0;
   ssize_type vgmaxdepth_ = 0;
-  vecgeom::cuda::NavStatePool vgstate_;
-  vecgeom::cuda::NavStatePool vgnext_;
+  VGNavStatePool vgstate_;
+  VGNavStatePool vgnext_;
   thrust::device_vector<Real3> pos_;
   thrust::device_vector<Real3> dir_;
   thrust::device_vector<double> next_step_;
