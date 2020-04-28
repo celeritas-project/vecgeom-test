@@ -25,10 +25,10 @@ namespace celeritas {
  * Transport a particle on a single thread.
  */
 __device__ void transport_one(const VGGeometry& geo, VGStateRef state) {
-  // Real3 pos{-100, 0, 0};
-  // Real3 dir{1, 0, 0};
-  // InitialStateRef primary({&pos, &dir});
-  // geo.Construct(state, primary);
+  Real3 pos{-100, 0, 0};
+  Real3 dir{1, 0, 0};
+  InitialStateRef primary({&pos, &dir});
+  geo.Construct(state, primary);
   while (geo.IsInside(state)) {
     // geo.FindNextStep(state);
     // tal.CellTally(geo.Id(state), geo.NextStep(state));
