@@ -28,7 +28,10 @@ namespace celeritas {
  */
 VGGeometryHost::VGGeometryHost(const char* gdml_filename) {
   cout << "::: Loading from GDML" << endl;
-  vgdml::Frontend::Load(gdml_filename);
+  // NOTE: the validation check disabling is missing from vecgeom 1.1.6 and
+  // earlier; without it, the VGDML loader may crash.
+  constexpr bool validate_xml_schema = false;
+  vgdml::Frontend::Load(gdml_filename, validate_xml_schema);
   cout << "::: Initializing tracking information" << endl;
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
 
