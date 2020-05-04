@@ -32,6 +32,8 @@ VGGeometryHost::VGGeometryHost(const char* gdml_filename) {
   // earlier; without it, the VGDML loader may crash.
   constexpr bool validate_xml_schema = false;
   vgdml::Frontend::Load(gdml_filename, validate_xml_schema);
+  // XXX this call is missing from vgdml load
+  vecgeom::GeoManager::Instance().CloseGeometry();
   cout << "::: Initializing tracking information" << endl;
   vecgeom::ABBoxManager::Instance().InitABBoxesForCompleteGeometry();
 
